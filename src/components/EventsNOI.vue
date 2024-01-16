@@ -175,7 +175,7 @@ body {
   margin: 0;
   min-height: 100vh;
   height: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 60px;
 }
 
 header {
