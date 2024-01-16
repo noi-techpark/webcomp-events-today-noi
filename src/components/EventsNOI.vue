@@ -109,24 +109,29 @@ export default {
       this.events = [];
 
       const items = JSON.parse(xhttp.response);
-      for (let i = 0; i <= items.length - 1; i++) {
-        const element = items[i];
-        const startDate = new Date(element.RoomStartDate);
-        const endDate = new Date(element.RoomEndDate);
-        const room = element.SpaceDescList[0];
+      items.forEach((element) => {
+        if (
+          this.options.room == null ||
+          this.options.room === "" ||
+          element.SpaceDescList.indexOf(this.options.room) > -1
+        ) {
+          const startDate = new Date(element.RoomStartDate);
+          const endDate = new Date(element.RoomEndDate);
+          const room = element.SpaceDescList[0];
 
-        let event = {
-          title: this.devMode ? this.lorem : element.EventTitle.en,
-          subTitle: this.devMode ? this.lorem : element.Subtitle,
-          companyName: element.CompanyName,
-          webAddress: element.EventWebAddress,
-          time: this.formatTime(startDate, endDate),
-          room: room,
-          startDate: this.formatDate(startDate),
-          mapsLink: this.roomMapping[room],
-        };
-        this.events.push(event);
-      }
+          let event = {
+            title: this.devMode ? this.lorem : element.EventTitle.en,
+            subTitle: this.devMode ? this.lorem : element.Subtitle,
+            companyName: element.CompanyName,
+            webAddress: element.EventWebAddress,
+            time: this.formatTime(startDate, endDate),
+            room: room,
+            startDate: this.formatDate(startDate),
+            mapsLink: this.roomMapping[room],
+          };
+          this.events.push(event);
+        }
+      });
     },
     fetchRoomMapping() {
       const baseURL =
