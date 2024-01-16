@@ -169,7 +169,6 @@ export default {
 
 <style>
 #base {
-  /* font-family: "Source Sans Pro", sans-serif; */
   width: 100%;
   text-align: center;
   color: #000;
@@ -209,7 +208,7 @@ header {
 }
 
 .line {
-  min-height: 17vh;
+  min-height: 6em;
   padding: 0 20px;
   display: flex;
   align-items: center;
@@ -221,17 +220,17 @@ header {
 
 .right {
   display: flex;
+  align-items: center;
 }
 
 .location {
   color: #fff;
   background-color: #000;
-  padding: 10px 26px;
-  margin-left: 20px;
-  margin-right: 20px;
+  padding: 10px 20px;
   font-size: 1.6em;
   font-weight: bold;
-  max-width: 50%;
+  display: flex;
+  align-items: center;
 }
 
 a {
@@ -268,95 +267,5 @@ a.room {
 }
 .footer-text {
   color: white;
-}
-
-/* MOBILE */
-
-@media screen and (min-width: 320px) and (max-width: 812px) {
-  h1 {
-    font-size: 2.6em;
-  }
-
-  header {
-    display: block;
-  }
-
-  header .pull-left,
-  header .pull-right {
-    float: none !important;
-  }
-
-  .line {
-    font-size: 12px;
-    padding: 0;
-    height: auto;
-  }
-
-  body {
-    overflow: auto;
-    padding-top: 2vh;
-  }
-
-  .clock {
-    font-size: 1em;
-  }
-
-  .slideshow-container {
-    height: max-content;
-  }
-}
-
-@media screen and (min-width: 320px) and (max-width: 812px) and (orientation: portrait) {
-  .location {
-    max-width: none;
-    margin: 0 40px;
-  }
-
-  .line > div {
-    display: block;
-  }
-
-  .starts-in {
-    padding: 15px;
-  }
-
-  .starts-in,
-  .description {
-    text-align: center;
-  }
-
-  .slideshow-container {
-    height: max-content;
-  }
-}
-
-@media screen and (min-width: 992px) and (max-height: 901px) and (orientation: landscape) {
-  body {
-    font-size: 10px;
-  }
-}
-
-@media screen and (max-width: 1441px) and (max-height: 901px) and (orientation: landscape) {
-  body {
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 1280px) and (min-height: 1024px) and (orientation: landscape) {
-  body {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 1600px) and (min-height: 900px) and (orientation: landscape) {
-  body {
-    font-size: 14px;
-  }
-}
-
-@media screen and (max-width: 992px) and (min-width: 812px) and (orientation: landscape) {
-  body {
-    font-size: 8px;
-  }
 }
 </style>
