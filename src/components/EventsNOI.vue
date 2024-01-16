@@ -5,8 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div
-    id="base"
+  <body
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
     <header>
@@ -28,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="company">{{ event.companyName }}</div>
         </div>
 
-        <div class="right">
+        <div class="details">
           <div class="location">
             <a
               v-if="event.mapsLink"
@@ -41,15 +40,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           </div>
 
           <div class="starts-in">
-            <div>
-              <small>
-                {{ event.time }}
-              </small>
-              <br />
-              <strong>
-                {{ event.startDate }}
-              </strong>
-            </div>
+            <small>
+              {{ event.time }}
+            </small>
+            <br />
+            <strong>
+              {{ event.startDate }}
+            </strong>
           </div>
         </div>
       </div>
@@ -63,7 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         /></a>
       </div>
     </div>
-  </div>
+  </body>
 </template>
 
 <script>
@@ -164,7 +161,7 @@ export default {
 </script>
 
 <style>
-#base {
+body {
   width: 100%;
   text-align: center;
   color: #000;
@@ -196,9 +193,7 @@ header {
   font-weight: 600;
   margin-bottom: 8px;
 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: break-spaces;
   max-width: 70vw;
 }
 
@@ -207,9 +202,7 @@ header {
   font-weight: 400;
   margin-bottom: 8px;
 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: break-spaces;
   max-width: 70vw;
 }
 
@@ -218,7 +211,9 @@ header {
   font-size: 1.4em;
   font-weight: 800;
   color: #8c8c8c;
-  float: left;
+
+  display: flex;
+  justify-content: start;
 }
 
 .line {
@@ -231,7 +226,7 @@ header {
   border: solid #000 8px;
 }
 
-.right {
+.details {
   display: flex;
   align-items: center;
 }
@@ -262,9 +257,10 @@ a.room {
 }
 
 .starts-in {
-  text-align: right;
   font-size: 2em;
   line-height: 1;
+  display: flex;
+  flex-direction: column;
   justify-content: right;
 }
 
@@ -277,5 +273,37 @@ a.room {
   display: flex;
   align-items: center;
   justify-content: end;
+}
+
+@media only screen and (max-width: 1024px) {
+  body {
+    font-size: 12px;
+  }
+
+  .line {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .company {
+    justify-content: center;
+  }
+
+  .details {
+    flex-direction: column;
+  }
+
+  .location {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .starts-in {
+    justify-content: center;
+  }
+
+  header {
+    flex-direction: column;
+  }
 }
 </style>
