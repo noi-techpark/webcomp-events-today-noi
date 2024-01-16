@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="row line" v-for="event in events" :key="event.key">
         <div>
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <strong class="title">{{ event.title }}</strong>
+            <div class="title">{{ event.title }}</div>
           </a>
           <div v-else class="title">{{ event.title }}</div>
           <div class="subTitle">{{ event.subTitle }}</div>
@@ -82,7 +82,7 @@ export default {
     return {
       events: [],
       roomMapping: this.fetchRoomMapping(),
-      devMode: false,
+      devMode: false, // shows lorem ipsum as title an subtitle
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     };
@@ -118,12 +118,8 @@ export default {
         const room = element.SpaceDescList[0];
 
         let event = {
-          title: this.devMode
-            ? { en: this.lorem, it: this.lorem, de: this.lorem }
-            : element.EventTitle.en,
-          subTitle: this.devMode
-            ? { en: this.lorem, it: this.lorem, de: this.lorem }
-            : element.Subtitle,
+          title: this.devMode ? this.lorem : element.EventTitle.en,
+          subTitle: this.devMode ? this.lorem : element.Subtitle,
           companyName: element.CompanyName,
           webAddress: element.EventWebAddress,
           time: this.formatTime(startDate, endDate),
@@ -199,6 +195,22 @@ header {
   font-size: 2.3em;
   font-weight: 600;
   margin-bottom: 8px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 70vw;
+}
+
+.subTitle {
+  font-size: 1.8em;
+  font-weight: 400;
+  margin-bottom: 8px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 70vw;
 }
 
 .company {
