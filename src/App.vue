@@ -18,6 +18,10 @@ export default {
   name: "App",
   props: {
     room: { type: String, default: "" },
+    fontUrl: {
+      type: String,
+      default: "https://fonts.testingmachine.eu/source-sans-pro/style.css",
+    },
     fontName: {
       type: String,
       default: "Source Sans Pro",
