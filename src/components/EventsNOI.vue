@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
     <header>
-      <h1 id="mainTitle"><strong>TODAY</strong>.NOI.BZ.IT</h1>
+      <div id="mainTitle"><strong>TODAY</strong>.NOI.BZ.IT</div>
       <img
         :src="require('@/assets/icons/NOI_2_BK_borderless.png')"
         class="noi-logo"
@@ -198,24 +198,27 @@ header {
 
 .title {
   font-size: 2.3em;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .company {
   line-height: 1;
-  font-weight: bold;
+  font-size: 1.4em;
+  font-weight: 800;
   color: #8c8c8c;
   float: left;
 }
 
 .line {
-  min-height: 6em;
-  padding: 0 20px;
+  min-height: 10em;
+  padding: 0px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   box-sizing: content-box;
-  border: solid #000 5px;
+  border: solid #000 8px;
 }
 
 .right {
@@ -226,11 +229,12 @@ header {
 .location {
   color: #fff;
   background-color: #000;
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 1.6em;
   font-weight: bold;
   display: flex;
   align-items: center;
+  margin-right: 20px;
 }
 
 a {
@@ -254,9 +258,6 @@ a.room {
   justify-content: right;
 }
 
-.starts-in strong {
-  font-size: 1.25em;
-}
 .footer {
   padding-top: 20px;
   bottom: 0;
