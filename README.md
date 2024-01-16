@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC0-1.0
 
 [![REUSE Compliance](https://github.com/noi-techpark/webcomp-events-today/actions/workflows/reuse.yml/badge.svg)](https://github.com/noi-techpark/odh-docs/wiki/REUSE#badges)
 
-Events Today is a web component that displays a list of events that are happening. It fetches data from the [EventShort API](https://tourism.opendatahub.com/swagger/index.html#/EventShort)  and displays the events in a simple, easy-to-read format.<br>
+Events Today is a web component that displays a list of events that are happening at NOI Techpark. It fetches data from the [EventShort API](https://tourism.opendatahub.com/swagger/index.html#/EventShort)  and displays the events in a simple, easy-to-read format.<br>
 
 
 **Table of Contents**
@@ -22,15 +22,6 @@ To use the "Events Today" web component, you need to include the following code 
 <events-today></events-today>
 ```
 ### General attributes
-#### <b>eventLocation</b>
-
-The attribute eventLocation shows an abbreviation of the event location that is displayed. 
-Possible options are:
-- `NOI` for events of the NOI Techpark Bolzano
-- `EC` for events of Eurac
-
-### Special attributes for Eurac
-The following attributes work only if eventLocation is set to `EC` for Eurac events
 
 #### <b>room</b>
 The room attribute allows you to select events based on the specific room or location where the event will be held. The room attribute can be used as a filter to narrow down the search results and show only events that are taking place in a particular room or location.  
@@ -38,35 +29,6 @@ Default value is empty, so all rooms are shown.
 
 ```
 <events-today room="Seminar 1"></events-today>
-```
-
-#### <b>maxEvents</b>
-
-The maxEvents attribute controls the limit on the number of events that can be shown on a page.  
-If the value is 1, the font size and layout changes.  
-Default value is 4.
-
-```
-<events-today maxEvents="1"></events-today>
-```
-
-#### <b>languageRotationInterval</b>
-
-The languageRotationInterval attribute's defines after how many seconds the titles of the events are shown in another language.  
-Default value is 10.
-
-```
-<events-today languageRotationInterval="20"></events-today>
-```
-
-#### <b>imageGalleryUrl</b>
-
-The imageGalleryUrl attribute's defines is an URL to an AWS S3 bucket containing images, that will show, if no events are happening at the moment.  
-Note: The images must be in the root directory of the bucket and the bucket must be listable, so that the Webcomponent can see all images file names and switch between them.
-Default value is "https://s3.eu-west-1.amazonaws.com/it.bz.noi.today.eurac.gallery".
-
-```
-<events-today imageGalleryUrl="https://s3.eu-west-1.amazonaws.com/it.bz.noi.today.eurac.gallery"></events-today>
 ```
 
 ## Getting started

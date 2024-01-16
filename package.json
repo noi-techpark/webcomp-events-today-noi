@@ -1,11 +1,11 @@
 {
-  "name": "webcomp-events-today",
+  "name": "webcomp-events-today-noi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "npm run vcbuild -- --target wc --name events-today ./src/App.vue --watch --inline-vue",
+    "serve": "npm run vcbuild -- --target wc --name events-today-noi ./src/App.vue --watch --inline-vue",
     "start": "npm run serve",
-    "build": "npm run vcbuild -- --target wc --name events-today ./src/App.vue --inline-vue",
+    "build": "npm run vcbuild -- --target wc --name events-today-noi ./src/App.vue --inline-vue",
     "lint": "vue-cli-service lint",
     "vcbuild": "vue-cli-service build"
   },

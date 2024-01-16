@@ -97,7 +97,7 @@ export default {
 
       const params = new URLSearchParams([
         ["startdate", new Date().getTime()],
-        ["eventlocation", this.options.eventLocation],
+        ["eventlocation", "NOI"],
         ["datetimeformat", "uxtimestamp"],
         ["onlyactive", true],
         ["sortorder", "ASC"],

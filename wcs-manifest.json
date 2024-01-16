@@ -1,10 +1,10 @@
 {
-    "title": "events-today",
-    "shortName": "events-today",
+    "title": "events-today-noi",
+    "shortName": "events-today-noi",
     "description": "A simple web component to see NOI events",
     "descriptionAbstract": "events simple webcomp",
     "license": "AGPL-3.0-or-later",
-    "repositoryUrl": "https://github.com/noi-techpark/webcomp-events-today.git",
+    "repositoryUrl": "https://github.com/noi-techpark/webcomp-events-today-noi.git",
     "copyrightHolders": [
         {
             "name": "NOI",
@@ -37,21 +37,8 @@
         "scripts": []
     },
     "configuration": {
-        "tagName": "events-today",
+        "tagName": "events-today-noi",
         "options": [
-            {
-                "key": "event-location",
-                "type": "select",
-                "label": "Location of the events: NOI (NOI Techpark), EC (Eurac)",
-                "required": true,
-                "options": {
-                    "values": [
-                        "NOI",
-                        "EC"
-                    ],
-                    "default": "NOI"
-                }
-            },
             {
                 "key": "room",
                 "type": "text",
@@ -59,51 +46,6 @@
                 "required": false,
                 "options": {
                     "default": ""
-                }
-            },
-            {
-                "key": "max-events",
-                "type": "number",
-                "label": "Max number of events to display",
-                "required": false,
-                "options": {
-                    "default": 4
-                }
-            },
-            {
-                "key": "event-rotation-interval",
-                "type": "number",
-                "label": "Event rotation interval in seconds, if not all events are visible on screen. Will be ignored if max-events os set to 1",
-                "required": false,
-                "options": {
-                    "default": 60
-                }
-            },
-            {
-                "key": "language-rotation-interval",
-                "type": "number",
-                "label": "Language rotation interval in seconds. Supported languages are 'en','de' and 'it'",
-                "required": false,
-                "options": {
-                    "default": 10
-                }
-            },
-            {
-                "key": "image-gallery-url",
-                "type": "text",
-                "label": "Gallery image s3 bucket URL",
-                "required": false,
-                "options": {
-                    "default": "https://s3.eu-west-1.amazonaws.com/it.bz.noi.today.eurac.gallery"
-                }
-            },
-            {
-                "key": "image-gallery-interval",
-                "type": "number",
-                "label": "Gallery interval in seconds",
-                "required": false,
-                "options": {
-                    "default": 60
                 }
             },
             {
