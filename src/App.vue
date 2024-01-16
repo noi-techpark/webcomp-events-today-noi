@@ -7,6 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <EventsNOI
     :options="{
+      devMode: devMode,
       room: room,
       fontName: fontName,
     }"
@@ -25,6 +26,10 @@ export default {
     fontName: {
       type: String,
       default: "Source Sans Pro",
+    },
+    devMode: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

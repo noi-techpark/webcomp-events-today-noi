@@ -65,6 +65,15 @@
                 "options": {
                     "default": "Source Sans Pro"
                 }
+            },
+            {
+                "key": "dev-mode",
+                "type": "null",
+                "label": "Enables dev mode, to show special edge cases, like long subtitles",
+                "required": false,
+                "options": {
+                    "default": false
+                }
             }
         ]
     }
