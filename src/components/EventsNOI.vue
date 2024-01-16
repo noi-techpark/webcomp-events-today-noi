@@ -11,8 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <header>
       <div id="mainTitle"><strong>TODAY</strong>.NOI.BZ.IT</div>
       <img
-        :src="require('@/assets/icons/NOI_2_BK_borderless.png')"
+        src="https://third-party.opendatahub.com/noi-logo/noi-black.svg"
         class="noi-logo"
+        alt="NOI logo"
       />
     </header>
 
@@ -217,8 +218,8 @@ header {
 }
 
 .line {
-  min-height: 10em;
-  padding: 0px 40px;
+  min-height: 8em;
+  padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -238,8 +239,8 @@ header {
   font-size: 1.6em;
   font-weight: bold;
   display: flex;
-  align-items: center;
-  margin-right: 20px;
+  justify-content: center;
+  margin: 15px;
 }
 
 a {
@@ -252,8 +253,7 @@ a.room {
 }
 
 .noi-logo {
-  width: 155px;
-  margin: 20px;
+  width: 275px;
 }
 
 .starts-in {
@@ -261,7 +261,6 @@ a.room {
   line-height: 1;
   display: flex;
   flex-direction: column;
-  justify-content: right;
 }
 
 .footer {
@@ -285,6 +284,10 @@ a.room {
     padding: 10px;
   }
 
+  .title {
+    max-width: 95vw;
+  }
+
   .company {
     justify-content: center;
   }
@@ -294,12 +297,7 @@ a.room {
   }
 
   .location {
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-
-  .starts-in {
-    justify-content: center;
+    width: 67vw;
   }
 
   header {
