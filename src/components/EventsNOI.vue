@@ -186,7 +186,6 @@ header {
 }
 
 .content {
-  box-sizing: content-box;
   border: solid #000 10px;
 }
 
@@ -217,7 +216,6 @@ header {
   align-items: center;
   justify-content: space-between;
 
-  box-sizing: content-box;
   border: solid #000 8px;
 }
 
@@ -259,14 +257,13 @@ a.room {
 }
 
 .footer {
-  padding-top: 20px;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: right;
-  z-index: 100001;
+  padding-top: 10px;
+  background: #000;
 }
 .footer-text {
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
 </style>
