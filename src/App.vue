@@ -20,7 +20,7 @@ export default {
     room: { type: String, default: "" },
     fontName: {
       type: String,
-      default: "Source Sans Prod",
+      default: "Source Sans Pro",
     },
   },
   components: {
