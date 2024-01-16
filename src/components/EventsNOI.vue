@@ -139,7 +139,7 @@ export default {
     },
     formatTime(startDate, endDate) {
       return String(
-        startDate.getHours() +
+        String(startDate.getHours()).padStart(2, "0") +
           ":" +
           String(startDate.getMinutes()).padStart(2, "0") +
           " - " +
