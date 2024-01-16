@@ -20,7 +20,7 @@ export default {
     room: { type: String, default: "" },
     fontName: {
       type: String,
-      default: "Milo Bold",
+      default: "Source Sans Prod",
     },
   },
   components: {
