@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
     <header>
-      <div id="mainTitle"><strong>TODAY</strong>.NOI.BZ.IT</div>
+      <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
       <img
         src="https://third-party.opendatahub.com/noi-logo/noi-black.svg"
         class="noi-logo"
@@ -45,9 +45,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               {{ event.time }}
             </small>
             <br />
-            <strong>
+            <div class="bold">
               {{ event.startDate }}
-            </strong>
+            </div>
           </div>
         </div>
       </div>
@@ -184,9 +184,12 @@ header {
 }
 
 #mainTitle {
-  font-size: 5em;
-  padding: 25px;
-  margin: 0;
+  font-size: 5rem;
+  padding: 20px;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 .title {
@@ -277,6 +280,10 @@ a.room {
 @media only screen and (max-width: 1024px) {
   body {
     font-size: 12px;
+  }
+
+  #mainTitle {
+    font-size: 3rem;
   }
 
   .line {
