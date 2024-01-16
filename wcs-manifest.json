@@ -1,8 +1,8 @@
 {
     "title": "events-today-noi",
     "shortName": "events-today-noi",
-    "description": "A simple web component to see NOI events",
-    "descriptionAbstract": "events simple webcomp",
+    "description": "A simple web component to see a list of events happening at the NOI Techpark",
+    "descriptionAbstract": "Events happening at the NOI Techpark",
     "license": "AGPL-3.0-or-later",
     "repositoryUrl": "https://github.com/noi-techpark/webcomp-events-today-noi.git",
     "copyrightHolders": [
