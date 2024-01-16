@@ -242,6 +242,8 @@ header {
 .details {
   display: flex;
   align-items: center;
+
+  white-space: nowrap;
 }
 
 .location {
