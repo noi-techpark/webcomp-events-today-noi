@@ -122,7 +122,7 @@ export default {
           let event = {
             title: this.devMode ? this.lorem : element.EventTitle.en,
             subTitle: this.devMode ? this.lorem : element.Subtitle,
-            companyName: element.CompanyName,
+            companyName: this.devMode ? this.lorem : element.CompanyName,
             webAddress: element.EventWebAddress,
             time: this.formatTime(startDate, endDate),
             room: room,
@@ -205,7 +205,6 @@ header {
   text-align: left;
 
   white-space: break-spaces;
-  max-width: 70vw;
 }
 
 .subTitle {
@@ -216,7 +215,6 @@ header {
   text-align: left;
 
   white-space: break-spaces;
-  max-width: 70vw;
 }
 
 .company {
@@ -224,6 +222,8 @@ header {
   font-size: 1.4rem;
   font-weight: 800;
   color: #8c8c8c;
+
+  text-align: left;
 
   display: flex;
   justify-content: start;
@@ -312,6 +312,7 @@ a.room {
 
   .company {
     justify-content: center;
+    text-align: center;
   }
 
   .details {
