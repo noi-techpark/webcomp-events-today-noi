@@ -6,6 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <body
+    :class="getBodyClass"
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
     <div id="header" :class="getHeaderClass">
@@ -101,6 +102,11 @@ export default {
         blackHeader: this.theme != Themes.default,
       };
     },
+    getBodyClass() {
+      return {
+        halfScreen: this.theme === Themes.halfScreenBlack,
+      };
+    },
     isDefaultTheme() {
       return this.theme === Themes.default;
     },
@@ -118,11 +124,15 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const location = urlParams.get("location");
 
-      switch (location) {
+      if (location == null) {
+        return Themes.default;
+      }
+
+      switch (location.toLocaleLowerCase()) {
         case "foyer":
           return Themes.halfScreenBlack;
-        case "D1":
-        case "D6":
+        case "d1":
+        case "d6":
           return Themes.fullScreenBlack;
         default:
           return Themes.default;
@@ -233,6 +243,11 @@ body {
   padding-bottom: 60px;
 }
 
+.halfScreen {
+  max-width: 50vw;
+  font-size: 9px;
+}
+
 #header {
   display: flex;
   justify-content: space-between;
@@ -244,12 +259,12 @@ body {
 }
 
 #time {
-  font-size: 3.5rem;
+  font-size: 3.5em;
   font-weight: 700;
 }
 
 #date {
-  font-size: 2rem;
+  font-size: 2em;
   font-weight: 400;
 }
 
@@ -263,7 +278,7 @@ body {
 }
 
 #mainTitle {
-  font-size: 5rem;
+  font-size: 5em;
   padding: 20px;
 }
 
@@ -282,7 +297,7 @@ body {
 }
 
 .subTitle {
-  font-size: 1.4rem;
+  font-size: 1.4em;
   font-weight: 400;
   margin-bottom: 8px;
 
@@ -293,7 +308,7 @@ body {
 
 .company {
   line-height: 1;
-  font-size: 1.4rem;
+  font-size: 1.4em;
   font-weight: 800;
   color: #8c8c8c;
 
@@ -372,7 +387,7 @@ a.room {
   }
 
   #mainTitle {
-    font-size: 3rem;
+    font-size: 3em;
   }
 
   .line {
