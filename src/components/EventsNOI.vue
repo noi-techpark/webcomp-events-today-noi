@@ -87,6 +87,9 @@ export default {
   },
   methods: {
     fetchData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      console.log(urlParams);
+
       const baseURL =
         "https://tourism.api.opendatahub.com/v1/EventShort/GetbyRoomBooked?";
 
