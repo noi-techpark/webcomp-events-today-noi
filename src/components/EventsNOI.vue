@@ -8,14 +8,19 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <body
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
-    <header>
+    <div id="header" :class="getHeaderClass">
       <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
       <img
+        v-if="isDefaultTheme"
         src="https://third-party.opendatahub.com/noi-logo/noi-black.svg"
         class="noi-logo"
         alt="NOI logo"
       />
-    </header>
+      <div v-else id="dateTime">
+        <div id="time">{{ timestamp }}</div>
+        <div id="date">{{ currentDate() }}</div>
+      </div>
+    </div>
 
     <div class="content">
       <div class="row line" v-for="event in events" :key="event.key">
@@ -65,6 +70,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+// define themes
+const Themes = Object.freeze({
+  default: "default",
+  halfScreenBlack: "halfScreenBlack",
+  fullScreenBlack: "fullScreenBlack",
+});
 export default {
   name: "EventsToday",
   props: {
@@ -73,26 +84,51 @@ export default {
       return {};
     },
   },
-  created: function () {
-    this.fetchData();
-
-    // cron jobs
-    setInterval(this.fetchData, 5 * 60 * 1000); // every 5 minutes
-  },
   data: function () {
     return {
       events: [],
       roomMapping: this.fetchRoomMapping(),
       devMode: this.options.devMode, // shows lorem ipsum as title an subtitle
+      theme: this.getTheme(),
+      timestamp: "",
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
-  methods: {
-    fetchData() {
-      const urlParams = new URLSearchParams(window.location.search);
-      console.log(urlParams);
+  computed: {
+    getHeaderClass() {
+      return {
+        blackHeader: this.theme != Themes.default,
+      };
+    },
+    isDefaultTheme() {
+      return this.theme === Themes.default;
+    },
+  },
+  created: function () {
+    this.fetchData();
+    this.updateTimestamp();
 
+    // cron jobs
+    setInterval(this.fetchData, 5 * 60 * 1000); // every 5 minutes
+    setInterval(this.updateTimestamp, 1000);
+  },
+  methods: {
+    getTheme() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const location = urlParams.get("location");
+
+      switch (location) {
+        case "foyer":
+          return Themes.halfScreenBlack;
+        case "D1":
+        case "D6":
+          return Themes.fullScreenBlack;
+        default:
+          return Themes.default;
+      }
+    },
+    fetchData() {
       const baseURL =
         "https://tourism.api.opendatahub.com/v1/EventShort/GetbyRoomBooked?";
 
@@ -168,6 +204,19 @@ export default {
       };
       return date.toLocaleDateString("en-GB", options);
     },
+    updateTimestamp() {
+      const today = new Date();
+      const time =
+        today.getHours() +
+        ":" +
+        (today.getMinutes() < 10 ? "0" : "") +
+        today.getMinutes();
+      this.timestamp = time;
+    },
+    currentDate() {
+      const current = new Date();
+      return this.formatDate(current);
+    },
   },
 };
 </script>
@@ -184,10 +233,29 @@ body {
   padding-bottom: 60px;
 }
 
-header {
+#header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+#dateTime {
+  padding: 20px;
+}
+
+#time {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+#date {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.blackHeader {
+  color: #fff;
+  background-color: #000;
 }
 
 .content {
@@ -299,6 +367,10 @@ a.room {
     font-size: 12px;
   }
 
+  #header {
+    flex-direction: column;
+  }
+
   #mainTitle {
     font-size: 3rem;
   }
@@ -329,10 +401,6 @@ a.room {
 
   .location {
     width: 67vw;
-  }
-
-  header {
-    flex-direction: column;
   }
 }
 </style>
