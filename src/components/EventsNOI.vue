@@ -75,6 +75,9 @@ export default {
   },
   created: function () {
     this.fetchData();
+
+    // cron jobs
+    setInterval(this.fetchData, 5 * 60 * 1000); // every 5 minutes
   },
   data: function () {
     return {
