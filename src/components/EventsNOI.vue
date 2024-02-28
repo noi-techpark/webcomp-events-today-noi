@@ -10,14 +10,16 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     v-bind:style="{ 'font-family': this.options.fontName + ', sans-serif' }"
   >
     <div id="header" :class="getHeaderClass">
-      <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
+      <div id="mainTitle" :class="getHeaderPaddingClass">
+        <span class="bold">TODAY</span>.NOI.BZ.IT
+      </div>
       <img
         v-if="isDefaultTheme"
         src="https://third-party.opendatahub.com/noi-logo/noi-black.svg"
         class="noi-logo"
         alt="NOI logo"
       />
-      <div v-else id="dateTime">
+      <div v-else id="dateTime" :class="getHeaderPaddingClass">
         <div id="time">{{ timestamp }}</div>
         <div id="date">{{ currentDate() }}</div>
       </div>
@@ -100,11 +102,17 @@ export default {
     getHeaderClass() {
       return {
         blackHeader: this.theme != Themes.default,
+        halfHeader: this.theme != Themes.halfScreenBlack,
       };
     },
     getBodyClass() {
       return {
         halfScreen: this.theme === Themes.halfScreenBlack,
+      };
+    },
+    getHeaderPaddingClass() {
+      return {
+        headerPadding: this.theme !== Themes.halfScreenBlack,
       };
     },
     isDefaultTheme() {
@@ -245,7 +253,7 @@ body {
 
 .halfScreen {
   max-width: 50vw;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 #header {
@@ -255,7 +263,8 @@ body {
 }
 
 #dateTime {
-  padding: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
 }
 
 #time {
@@ -273,13 +282,22 @@ body {
   background-color: #000;
 }
 
+.halfHeader {
+  font-size: 14px;
+}
+
 .content {
   border: solid #000 10px;
 }
 
 #mainTitle {
-  font-size: 5em;
-  padding: 20px;
+  font-size: 5.7em;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.headerPadding {
+  padding-bottom: 20px;
 }
 
 .bold {
