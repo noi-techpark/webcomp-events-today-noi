@@ -26,12 +26,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
 
     <div class="content">
-      <div class="row line" v-for="event in events" :key="event.key">
+      <div :class="getLineClass" v-for="event in events" :key="event.key">
         <div>
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <div class="title">{{ event.title }}</div>
+            <div :class="getTitleClass">{{ event.title }}</div>
           </a>
-          <div v-else class="title">{{ event.title }}</div>
+          <div v-else :class="getTitleClass">{{ event.title }}</div>
           <div class="subTitle">{{ event.subTitle }}</div>
           <div class="company">{{ event.companyName }}</div>
         </div>
@@ -113,6 +113,18 @@ export default {
     getHeaderPaddingClass() {
       return {
         headerPadding: this.theme !== Themes.halfScreenBlack,
+      };
+    },
+    getLineClass() {
+      return {
+        line: true,
+        linePaddingHalfScreen: this.theme === Themes.halfScreenBlack,
+      };
+    },
+    getTitleClass() {
+      return {
+        title: true,
+        titleHalfScreen: this.theme === Themes.halfScreenBlack,
       };
     },
     isDefaultTheme() {
@@ -308,10 +320,12 @@ body {
   font-size: 2.3em;
   font-weight: 600;
   margin-bottom: 8px;
-
   text-align: left;
-
   white-space: break-spaces;
+}
+
+.titleHalfScreen {
+  font-size: 1.9em !important;
 }
 
 .subTitle {
@@ -344,6 +358,10 @@ body {
   justify-content: space-between;
 
   border: solid #000 8px;
+}
+
+.linePaddingHalfScreen {
+  padding: 0px 40px !important;
 }
 
 .details {
