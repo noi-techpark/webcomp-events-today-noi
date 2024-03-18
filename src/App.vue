@@ -10,6 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       devMode: devMode,
       room: room,
       fontName: fontName,
+      languageRotationInterval: languageRotationInterval,
     }"
   />
 </template>
@@ -22,6 +23,10 @@ export default {
     fontUrl: {
       type: String,
       default: "https://fonts.testingmachine.eu/source-sans-pro/style.css",
+    },
+    languageRotationInterval: {
+      type: Number,
+      default: 10,
     },
     fontName: {
       type: String,

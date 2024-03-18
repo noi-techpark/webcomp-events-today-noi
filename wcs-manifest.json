@@ -67,6 +67,15 @@
                 }
             },
             {
+                "key": "language-rotation-interval",
+                "type": "number",
+                "label": "Language rotation interval in seconds. Supported languages are 'en','de' and 'it'",
+                "required": false,
+                "options": {
+                    "default": 10
+                }
+            },
+            {
                 "key": "dev-mode",
                 "type": "null",
                 "label": "Enables dev mode, to show special edge cases, like long subtitles",

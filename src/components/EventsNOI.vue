@@ -29,9 +29,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div :class="getLineClass" v-for="event in events" :key="event.key">
         <div>
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <div :class="getTitleClass">{{ event.title }}</div>
+            <div :class="getTitleClass">{{ event.title[currentLanguage] }}</div>
           </a>
-          <div v-else :class="getTitleClass">{{ event.title }}</div>
+          <div v-else :class="getTitleClass">
+            {{ event.title[currentLanguage] }}
+          </div>
           <div class="subTitle">{{ event.subTitle }}</div>
           <div class="company">{{ event.companyName }}</div>
         </div>
@@ -94,6 +96,8 @@ export default {
       devMode: this.options.devMode, // shows lorem ipsum as title an subtitle
       theme: this.getTheme(),
       timestamp: "",
+      languages: ["en", "de", "it"],
+      currentLanguage: "en",
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
@@ -137,7 +141,11 @@ export default {
 
     // cron jobs
     setInterval(this.fetchData, 5 * 60 * 1000); // every 5 minutes
-    setInterval(this.updateTimestamp, 1000);
+    setInterval(this.updateTimestamp, 2000);
+    setInterval(
+      this.rotateLanguage,
+      this.options.languageRotationInterval * 1000
+    );
   },
   methods: {
     getTheme() {
@@ -192,7 +200,9 @@ export default {
           const room = element.SpaceDescList[0];
 
           let event = {
-            title: this.devMode ? this.lorem : element.EventTitle.en,
+            title: this.devMode
+              ? { en: this.lorem, it: this.lorem, de: this.lorem }
+              : element.EventTitle,
             subTitle: this.devMode ? this.lorem : element.Subtitle,
             companyName: this.devMode ? this.lorem : element.CompanyName,
             webAddress: element.EventWebAddress,
@@ -225,6 +235,11 @@ export default {
           ":" +
           String(endDate.getMinutes()).padStart(2, "0")
       );
+    },
+    rotateLanguage() {
+      let index = this.languages.indexOf(this.currentLanguage) + 1;
+      if (index >= this.languages.length) index = 0;
+      this.currentLanguage = this.languages[index];
     },
     formatDate(date) {
       let options = {
