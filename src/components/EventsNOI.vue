@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
 
         <div class="details">
-          <div class="location">
+          <div v-if="event.room" class="location">
             <a
               v-if="event.mapsLink"
               class="room"
