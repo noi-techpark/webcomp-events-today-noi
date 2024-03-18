@@ -336,7 +336,6 @@ body {
   font-weight: 600;
   margin-bottom: 8px;
   text-align: left;
-  white-space: break-spaces;
 }
 
 .titleHalfScreen {
@@ -349,8 +348,6 @@ body {
   margin-bottom: 8px;
 
   text-align: left;
-
-  white-space: break-spaces;
 }
 
 .company {
