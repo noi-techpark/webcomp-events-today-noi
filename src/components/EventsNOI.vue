@@ -252,10 +252,9 @@ export default {
     updateTimestamp() {
       const today = new Date();
       const time =
-        today.getHours() +
+        String(today.getHours()).padStart(2, "0") +
         ":" +
-        (today.getMinutes() < 10 ? "0" : "") +
-        today.getMinutes();
+        String(today.getMinutes()).padStart(2, "0");
       this.timestamp = time;
     },
     currentDate() {
