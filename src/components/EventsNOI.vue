@@ -364,11 +364,13 @@ body {
 
 .textWidthNormal {
   max-width: 75vw;
+  /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
   min-width: 0px;
 }
 
 .textWidthHalfScreen {
   max-width: 30vw;
+  /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
   min-width: 0px;
 }
 
