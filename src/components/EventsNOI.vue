@@ -29,12 +29,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div :class="getLineClass" v-for="event in events" :key="event.key">
         <div :class="getTextWidthClass">
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <div :class="getTitleClass">{{ event.title[currentLanguage] }}</div>
+            <div :class="getTitleClass(event)">
+              {{ event.title[currentLanguage] }}
+            </div>
           </a>
-          <div v-else :class="getTitleClass">
+          <div v-else :class="getTitleClass(event)">
             {{ event.title[currentLanguage] }}
           </div>
-          <div class="subTitle">
+          <div v-if="event.subTitle" class="subTitle">
             {{ event.subTitle }}
           </div>
           <div class="company">
@@ -129,12 +131,6 @@ export default {
         linePaddingHalfScreen: this.theme === Themes.halfScreenBlack,
       };
     },
-    getTitleClass() {
-      return {
-        title: true,
-        titleHalfScreen: this.theme === Themes.halfScreenBlack,
-      };
-    },
     getTextWidthClass() {
       return {
         textWidthNormal: this.theme !== Themes.halfScreenBlack,
@@ -159,6 +155,13 @@ export default {
     );
   },
   methods: {
+    getTitleClass(event) {
+      return {
+        title: true,
+        fitOneLineOverride: event.subTitle === "",
+        titleHalfScreen: this.theme === Themes.halfScreenBlack,
+      };
+    },
     getTheme() {
       const urlParams = new URLSearchParams(window.location.search);
       const location = urlParams.get("location");
@@ -379,6 +382,11 @@ a > div {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.fitOneLineOverride {
+  overflow: visible !important;
+  white-space: normal !important;
 }
 
 .company {
