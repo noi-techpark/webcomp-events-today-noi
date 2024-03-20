@@ -306,6 +306,7 @@ body {
 .blackHeader {
   color: #fff;
   background-color: #000;
+  height: 10vh;
 }
 
 .halfHeader {
@@ -362,14 +363,14 @@ body {
 }
 
 .line {
-  min-height: 8em;
+  min-height: 9vh;
   padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   background-color: #fff;
-  border: solid #000 8px;
+  border: solid #000 0.5vh;
 }
 
 .linePaddingHalfScreen {
