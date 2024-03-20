@@ -411,7 +411,7 @@ a > div {
 
 .borderNormal {
   border: solid #000;
-  border-width: 0.8vh 2vh 0.8vh 2vh;
+  border-width: 0.8vh 1.4vh 0.8vh 1.4vh;
 }
 
 .borderHalfScreen {
