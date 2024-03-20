@@ -369,6 +369,7 @@ body {
   align-items: center;
   justify-content: space-between;
 
+  background-color: #fff;
   border: solid #000 8px;
 }
 
@@ -422,7 +423,7 @@ a.room {
   color: white;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 @media only screen and (max-width: 1024px) {
