@@ -27,15 +27,19 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
     <div class="content">
       <div :class="getLineClass" v-for="event in events" :key="event.key">
-        <div>
+        <div :class="getTextWidthClass">
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
             <div :class="getTitleClass">{{ event.title[currentLanguage] }}</div>
           </a>
           <div v-else :class="getTitleClass">
             {{ event.title[currentLanguage] }}
           </div>
-          <div class="subTitle">{{ event.subTitle }}</div>
-          <div class="company">{{ event.companyName }}</div>
+          <div class="subTitle">
+            {{ event.subTitle }}
+          </div>
+          <div class="company">
+            {{ event.companyName }}
+          </div>
         </div>
 
         <div class="details">
@@ -129,6 +133,13 @@ export default {
       return {
         title: true,
         titleHalfScreen: this.theme === Themes.halfScreenBlack,
+      };
+    },
+    getTextWidthClass() {
+      return {
+        textWidthNormal: this.theme !== Themes.halfScreenBlack,
+        textWidthHalfScreen: this.theme === Themes.halfScreenBlack,
+        fitOneLine: this.theme === Themes.halfScreenBlack,
       };
     },
     isDefaultTheme() {
@@ -348,6 +359,24 @@ body {
   margin-bottom: 8px;
 
   text-align: left;
+  min-width: 0;
+}
+
+.textWidthNormal {
+  max-width: 75vw;
+  min-width: 0px;
+}
+
+.textWidthHalfScreen {
+  max-width: 30vw;
+  min-width: 0px;
+}
+
+.fitOneLine > div,
+a > div {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .company {
@@ -357,9 +386,6 @@ body {
   color: #8c8c8c;
 
   text-align: left;
-
-  display: flex;
-  justify-content: start;
 }
 
 .line {

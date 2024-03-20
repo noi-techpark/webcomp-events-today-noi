@@ -34,7 +34,7 @@ export default {
     },
     devMode: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   components: {
