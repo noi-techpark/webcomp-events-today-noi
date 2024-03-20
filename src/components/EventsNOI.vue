@@ -128,6 +128,8 @@ export default {
     getLineClass() {
       return {
         line: true,
+        borderNormal: this.theme !== Themes.halfScreenBlack,
+        borderHalfScreen: this.theme === Themes.halfScreenBlack,
         linePaddingHalfScreen: this.theme === Themes.halfScreenBlack,
       };
     },
@@ -404,8 +406,15 @@ a > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background-color: #fff;
+}
+
+.borderNormal {
+  border: solid #000;
+  border-width: 0.8vh 2vh 0.8vh 2vh;
+}
+
+.borderHalfScreen {
   border: solid #000;
   border-width: 0vh 0.5vh 1vh 0.5vh;
 }
