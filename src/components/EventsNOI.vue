@@ -406,7 +406,8 @@ a > div {
   justify-content: space-between;
 
   background-color: #fff;
-  border: solid #000 0.5vh;
+  border: solid #000;
+  border-width: 0vh 0.5vh 1vh 0.5vh;
 }
 
 .linePaddingHalfScreen {
