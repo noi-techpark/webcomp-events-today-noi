@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div v-else :class="getTitleClass(event)">
             {{ event.title[options.currentLanguage] }}
           </div>
-          <div class="subTitle fitOneLine">
+          <div v-if="event.subTitle" class="subTitle fitOneLine spaceToCompany">
             {{ event.subTitle }}
           </div>
           <div class="company">
@@ -88,6 +88,7 @@ export default {
     getTitleClass(event) {
       return {
         title: true,
+        spaceToCompany: event.subTitle === "",
         fitOneLine: event.subTitle !== "",
         fitOneLineOverride: event.subTitle === "",
       };
@@ -191,6 +192,10 @@ a > div {
   background: #fff;
   border: solid #000;
   border-width: 0vh 2vh 1vh 2vh;
+}
+
+.spaceToCompany {
+  margin-bottom: 4px;
 }
 
 .details {

@@ -19,14 +19,21 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="line" v-for="event in options.events" :key="event.key">
         <div class="textWidth">
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <div class="title">
+            <div
+              class="title"
+              :class="{ spaceToCompany: event.subTitle === '' }"
+            >
               {{ event.title[options.currentLanguage] }}
             </div>
           </a>
-          <div v-else class="title">
+          <div
+            v-else
+            class="title"
+            :class="{ spaceToCompany: event.subTitle === '' }"
+          >
             {{ event.title[options.currentLanguage] }}
           </div>
-          <div v-if="event.subTitle" class="subTitle">
+          <div v-if="event.subTitle" class="subTitle spaceToCompany">
             {{ event.subTitle }}
           </div>
           <div class="company">
@@ -133,17 +140,18 @@ body {
 .title {
   font-size: 2.3em;
   font-weight: 600;
-  margin-bottom: 8px;
   text-align: left;
 }
 
 .subTitle {
   font-size: 1.4em;
   font-weight: 400;
-  margin-bottom: 8px;
-
   text-align: left;
   min-width: 0;
+}
+
+.spaceToCompany {
+  margin-bottom: 16px;
 }
 
 .textWidth {
@@ -157,7 +165,6 @@ body {
   font-size: 1.4em;
   font-weight: 800;
   color: #8c8c8c;
-
   text-align: left;
 }
 
@@ -175,7 +182,6 @@ body {
 .details {
   display: flex;
   align-items: center;
-
   white-space: nowrap;
 }
 
