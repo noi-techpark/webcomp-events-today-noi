@@ -51,7 +51,7 @@ export default {
     },
     languageRotationInterval: {
       type: Number,
-      default: 1,
+      default: 10,
     },
     fontName: {
       type: String,
