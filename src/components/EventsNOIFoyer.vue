@@ -8,22 +8,22 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <body v-bind:style="{ 'font-family': options.fontName + ', sans-serif' }">
     <div id="header">
       <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
-      <img
-        src="https://third-party.opendatahub.com/noi-logo/noi-black.svg"
-        class="noi-logo"
-        alt="NOI logo"
-      />
+
+      <div id="dateTime">
+        <div id="time">{{ options.timestamp }}</div>
+        <div id="date">{{ options.currentDate }}</div>
+      </div>
     </div>
 
     <div class="content">
       <div class="line" v-for="event in options.events" :key="event.key">
         <div class="textWidth">
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
-            <div class="title">
+            <div :class="getTitleClass(event)">
               {{ event.title[options.currentLanguage] }}
             </div>
           </a>
-          <div v-else class="title">
+          <div v-else :class="getTitleClass(event)">
             {{ event.title[options.currentLanguage] }}
           </div>
           <div v-if="event.subTitle" class="subTitle">
@@ -85,30 +85,39 @@ export default {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
+  methods: {
+    getTitleClass(event) {
+      return {
+        title: true,
+        fitOneLine: event.subTitle !== "",
+        fitOneLineOverride: event.subTitle === "",
+      };
+    },
+  },
 };
 </script>
 
 <style>
 body {
   width: 100%;
-  font-size: 16px;
   text-align: center;
   color: #000;
+  max-width: 50vw;
+  font-size: 11px;
   margin: 0;
   min-height: 100vh;
   height: 100%;
   padding-bottom: 60px;
 }
 
-.halfScreen {
-  max-width: 50vw;
-  font-size: 11px;
-}
-
 #header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #fff;
+  background-color: #000;
+  height: 10.5vh;
+  font-size: 14px;
 }
 
 #dateTime {
@@ -128,7 +137,6 @@ body {
 #mainTitle {
   font-size: 5.7em;
   padding-left: 20px;
-  padding-bottom: 20px;
 }
 
 .bold {
@@ -156,12 +164,6 @@ body {
 }
 
 .textWidth {
-  max-width: 75vw;
-  /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
-  min-width: 0px;
-}
-
-.textWidthHalfScreen {
   max-width: 30vw;
   /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
   min-width: 0px;
@@ -190,17 +192,13 @@ a > div {
 
 .line {
   min-height: 9.05vh;
-  padding: 20px 40px;
+  padding: 0px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
   border: solid #000;
-  border-width: 1.6vh 2.4vh 0vh 2.4vh;
-}
-
-.linePaddingHalfScreen {
-  padding: 0px 40px !important;
+  border-width: 0vh 2vh 1vh 2vh;
 }
 
 .details {
@@ -250,47 +248,5 @@ a.room {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-}
-
-@media only screen and (max-width: 1024px) {
-  body {
-    font-size: 12px;
-  }
-
-  #header {
-    flex-direction: column;
-  }
-
-  #mainTitle {
-    font-size: 3em;
-  }
-
-  .line {
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  .title {
-    max-width: 95vw;
-    text-align: center;
-  }
-
-  .subTitle {
-    max-width: 95vw;
-    text-align: center;
-  }
-
-  .company {
-    justify-content: center;
-    text-align: center;
-  }
-
-  .details {
-    flex-direction: column;
-  }
-
-  .location {
-    width: 67vw;
-  }
 }
 </style>
