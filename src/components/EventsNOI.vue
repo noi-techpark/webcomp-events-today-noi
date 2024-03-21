@@ -167,7 +167,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
+  background: #fff;
   border: solid #000;
   border-width: 1.6vh 2.4vh 0vh 2.4vh;
 }
@@ -181,7 +181,7 @@ body {
 
 .location {
   color: #fff;
-  background-color: #000;
+  background: #000;
   padding: 12px 20px;
   font-size: 1.6em;
   font-weight: bold;

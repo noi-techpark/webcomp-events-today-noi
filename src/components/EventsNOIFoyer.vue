@@ -115,7 +115,7 @@ body {
   justify-content: space-between;
   align-items: center;
   color: #fff;
-  background-color: #000;
+  background: #000;
   height: 10.5vh;
 }
 
@@ -151,7 +151,6 @@ body {
 .subTitle {
   font-size: 1.4em;
   font-weight: 400;
-  margin-bottom: 4px;
 
   text-align: left;
   min-width: 0;
@@ -190,7 +189,7 @@ a > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
+  background: #fff;
   border: solid #000;
   border-width: 0vh 2vh 1vh 2vh;
 }
@@ -204,7 +203,7 @@ a > div {
 
 .location {
   color: #fff;
-  background-color: #000;
+  background: #000;
   padding: 12px 20px;
   font-size: 1.6em;
   font-weight: bold;
