@@ -5,49 +5,36 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <EventsNOIFoyer
-    v-if="theme === 'foyer'"
-    :options="{
-      devMode: devMode,
-      room: room,
-      fontName: fontName,
-      languageRotationInterval: languageRotationInterval,
-      events: events,
-      roomMapping: roomMapping,
-      timestamp: timestamp,
-      currentDate: currentDate(),
-      languages: languages,
-      currentLanguage: currentLanguage,
-    }"
-  />
-  <EventsNOID1
-    v-else-if="theme === 'd1'"
-    :options="{
-      devMode: devMode,
-      room: room,
-      fontName: fontName,
-      languageRotationInterval: languageRotationInterval,
-      events: events,
-      roomMapping: roomMapping,
-      timestamp: timestamp,
-      currentDate: currentDate(),
-      languages: languages,
-      currentLanguage: currentLanguage,
-    }"
-  />
-  <EventsNOI
-    v-else
-    :options="{
-      devMode: devMode,
-      room: room,
-      fontName: fontName,
-      languageRotationInterval: languageRotationInterval,
-      events: events,
-      roomMapping: roomMapping,
-      languages: languages,
-      currentLanguage: currentLanguage,
-    }"
-  />
+  <body v-bind:style="{ 'font-family': fontName + ', sans-serif' }">
+    <EventsNOIFoyer
+      v-if="theme === 'foyer'"
+      :options="{
+        devMode: devMode,
+        events: events,
+        currentLanguage: currentLanguage,
+        currentDate: currentDate(),
+        timestamp: timestamp,
+      }"
+    />
+    <EventsNOID1
+      v-else-if="theme === 'd1'"
+      :options="{
+        devMode: devMode,
+        events: events,
+        currentLanguage: currentLanguage,
+        timestamp: timestamp,
+        currentDate: currentDate(),
+      }"
+    />
+    <EventsNOI
+      v-else
+      :options="{
+        devMode: devMode,
+        events: events,
+        currentLanguage: currentLanguage,
+      }"
+    />
+  </body>
 </template>
 <script>
 import EventsNOI from "./components/EventsNOI.vue";

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <body v-bind:style="{ 'font-family': options.fontName + ', sans-serif' }">
+  <div>
     <div id="header">
       <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
       <img
@@ -67,7 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         /></a>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -98,11 +98,6 @@ body {
   min-height: 100vh;
   height: 100%;
   padding-bottom: 60px;
-}
-
-.halfScreen {
-  max-width: 50vw;
-  font-size: 11px;
 }
 
 #header {
@@ -142,10 +137,6 @@ body {
   text-align: left;
 }
 
-.titleHalfScreen {
-  font-size: 1.9em !important;
-}
-
 .subTitle {
   font-size: 1.4em;
   font-weight: 400;
@@ -159,24 +150,6 @@ body {
   max-width: 75vw;
   /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
   min-width: 0px;
-}
-
-.textWidthHalfScreen {
-  max-width: 30vw;
-  /*  min-width: 0px needed to allow flex container to have size smaller than max-width */
-  min-width: 0px;
-}
-
-.fitOneLine > div,
-a > div {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.fitOneLineOverride {
-  overflow: visible !important;
-  white-space: normal !important;
 }
 
 .company {
@@ -197,10 +170,6 @@ a > div {
   background-color: #fff;
   border: solid #000;
   border-width: 1.6vh 2.4vh 0vh 2.4vh;
-}
-
-.linePaddingHalfScreen {
-  padding: 0px 40px !important;
 }
 
 .details {
@@ -243,8 +212,11 @@ a.room {
 
 .footer {
   padding-top: 10px;
+  padding-right: 2.4vh;
+  padding-bottom: 10px;
   background: #000;
 }
+
 .footer-text {
   color: white;
   display: flex;

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <body v-bind:style="{ 'font-family': options.fontName + ', sans-serif' }">
+  <div>
     <div id="header">
       <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
       <div id="dateTime">
@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         /></a>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -233,6 +233,8 @@ a.room {
 
 .footer {
   padding-top: 10px;
+  padding-right: 2.4vh;
+  padding-bottom: 10px;
   background: #000;
 }
 

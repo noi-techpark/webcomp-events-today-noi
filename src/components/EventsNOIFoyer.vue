@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <body v-bind:style="{ 'font-family': options.fontName + ', sans-serif' }">
+  <div>
     <div id="header">
       <div id="mainTitle"><span class="bold">TODAY</span>.NOI.BZ.IT</div>
 
@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div v-else :class="getTitleClass(event)">
             {{ event.title[options.currentLanguage] }}
           </div>
-          <div v-if="event.subTitle" class="subTitle">
+          <div class="subTitle fitOneLine">
             {{ event.subTitle }}
           </div>
           <div class="company">
@@ -67,7 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         /></a>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -117,7 +117,6 @@ body {
   color: #fff;
   background-color: #000;
   height: 10.5vh;
-  font-size: 14px;
 }
 
 #dateTime {
@@ -144,20 +143,15 @@ body {
 }
 
 .title {
-  font-size: 2.3em;
+  font-size: 1.9em;
   font-weight: 600;
-  margin-bottom: 8px;
   text-align: left;
-}
-
-.titleHalfScreen {
-  font-size: 1.9em !important;
 }
 
 .subTitle {
   font-size: 1.4em;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 
   text-align: left;
   min-width: 0;
@@ -241,8 +235,11 @@ a.room {
 
 .footer {
   padding-top: 10px;
+  padding-right: 2.4vh;
+  padding-bottom: 10px;
   background: #000;
 }
+
 .footer-text {
   color: white;
   display: flex;
