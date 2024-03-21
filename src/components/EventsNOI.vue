@@ -322,7 +322,7 @@ body {
 .blackHeader {
   color: #fff;
   background-color: #000;
-  height: 10vh;
+  height: 9.5vh;
 }
 
 .halfHeader {
@@ -401,7 +401,7 @@ a > div {
 }
 
 .line {
-  min-height: 9vh;
+  min-height: 9.15vh;
   padding: 20px 40px;
   display: flex;
   align-items: center;
@@ -416,7 +416,7 @@ a > div {
 
 .borderHalfScreen {
   border: solid #000;
-  border-width: 0vh 0.5vh 1vh 0.5vh;
+  border-width: 0vh 0.5vh 0.9vh 0.5vh;
 }
 
 .linePaddingHalfScreen {
