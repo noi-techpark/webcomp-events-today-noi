@@ -306,7 +306,6 @@ body {
 
 #dateTime {
   padding-right: 20px;
-  padding-top: 20px;
 }
 
 #time {
@@ -319,24 +318,13 @@ body {
   font-weight: 400;
 }
 
-.blackHeader {
-  color: #fff;
-  background-color: #000;
-  height: 9.5vh;
-}
-
 .halfHeader {
   font-size: 14px;
-}
-
-.content {
-  border: solid #000 10px;
 }
 
 #mainTitle {
   font-size: 5.7em;
   padding-left: 20px;
-  padding-top: 20px;
 }
 
 .headerPadding {
@@ -401,12 +389,18 @@ a > div {
 }
 
 .line {
-  min-height: 9.15vh;
+  min-height: 9.05vh;
   padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
+}
+
+.blackHeader {
+  color: #fff;
+  background-color: #000;
+  height: 10.5vh;
 }
 
 .borderNormal {
@@ -416,7 +410,7 @@ a > div {
 
 .borderHalfScreen {
   border: solid #000;
-  border-width: 0vh 0.5vh 0.9vh 0.5vh;
+  border-width: 0vh 2vh 1vh 2vh;
 }
 
 .linePaddingHalfScreen {
