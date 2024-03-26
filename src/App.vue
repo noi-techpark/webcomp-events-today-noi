@@ -44,6 +44,7 @@ import EventsNOIFoyer from "./components/EventsNOIFoyer.vue";
 export default {
   name: "App",
   props: {
+    eventLocation: { type: String, default: "NOI" },
     room: { type: String, default: "" },
     fontUrl: {
       type: String,
@@ -132,9 +133,12 @@ export default {
 
       const params = new URLSearchParams([
         ["startdate", new Date().getTime()],
-        ["eventlocation", "NOI"],
+        ["eventlocation", this.eventLocation],
         ["datetimeformat", "uxtimestamp"],
-        ["onlyactive", true],
+        [
+          "publishedon",
+          this.eventLocation == "NOI" ? "today.noi.bz.it" : "Nobis",
+        ],
         ["sortorder", "ASC"],
         ["origin", "webcomp-events-today-noi"],
       ]);

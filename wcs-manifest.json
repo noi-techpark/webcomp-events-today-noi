@@ -29,7 +29,7 @@
     ],
     "image": "wcs-logo.png",
     "searchTags": [
-      "events"
+        "events"
     ],
     "dist": {
         "basePath": "dist",
@@ -41,6 +41,19 @@
     "configuration": {
         "tagName": "events-today-noi",
         "options": [
+            {
+                "key": "event-location",
+                "type": "select",
+                "label": "Event location: NOI, NOIBRUNECK",
+                "required": false,
+                "options": {
+                    "values": [
+                        "NOI",
+                        "NOIBRUNECK"
+                    ],
+                    "default": "NOI"
+                }
+            },
             {
                 "key": "room",
                 "type": "text",
