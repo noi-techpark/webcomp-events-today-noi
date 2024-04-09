@@ -175,6 +175,21 @@ export default {
           this.events.push(event);
         }
       });
+
+      // if no events are present, add "no events happening right now" placeholder
+      if (this.events.length == 0) {
+        let placeholderEvent = {
+          title: {
+            en: "No events",
+            it: "Non ci sono eventi",
+            de: "Keine Events",
+          },
+          companyName: "",
+          time: "",
+          room: "",
+        };
+        this.events.push(placeholderEvent);
+      }
     },
     fetchRoomMapping() {
       const baseURL =
