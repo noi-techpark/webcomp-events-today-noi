@@ -124,6 +124,19 @@ export default {
           return "default";
       }
     },
+    // overrides eventLocation prop, if events param is set in the url
+    // https://today.noi.bz.it/?events=noibruneck
+    getEventLocation() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventsParam = urlParams.get("events");
+      console.log(eventsParam);
+
+      if (eventsParam != null && eventsParam.toUpperCase() === "NOIBRUNECK") {
+        return "NOIBRUNECK";
+      }
+
+      return this.eventLocation;
+    },
     fetchData() {
       const baseURL =
         "https://tourism.api.opendatahub.com/v1/EventShort/GetbyRoomBooked?";
@@ -133,11 +146,11 @@ export default {
 
       const params = new URLSearchParams([
         ["startdate", new Date().getTime()],
-        ["eventlocation", this.eventLocation],
+        ["eventlocation", this.getEventLocation()],
         ["datetimeformat", "uxtimestamp"],
         [
           "publishedon",
-          this.eventLocation == "NOI" ? "today.noi.bz.it" : "Nobis",
+          this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "Nobis",
         ],
         ["sortorder", "ASC"],
         ["origin", "webcomp-events-today-noi"],

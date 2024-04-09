@@ -44,7 +44,7 @@
             {
                 "key": "event-location",
                 "type": "select",
-                "label": "Event location: NOI, NOIBRUNECK",
+                "label": "Event location: NOI, NOIBRUNECK. Will be overwritten with url parameters events: today.noi.bz.it?events=noibruneck",
                 "required": false,
                 "options": {
                     "values": [
