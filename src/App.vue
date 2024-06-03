@@ -181,7 +181,7 @@ export default {
             companyName: this.devMode ? this.lorem : element.CompanyName,
             webAddress: element.EventWebAddress,
             time: this.formatTime(startDate, endDate),
-            room: room,
+            room: element.SpaceDescList.sort().join(", "),
             startDate: this.formatDate(startDate),
             mapsLink: this.roomMapping[room],
           };
