@@ -35,15 +35,26 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
 
         <div class="details">
-          <div v-if="event.room" class="location">
-            <a
-              v-if="event.mapsLink"
-              class="room"
-              :href="event.mapsLink"
-              target="_blank"
-              >{{ event.room }}</a
-            >
-            <div v-else>{{ event.room }}</div>
+          <div v-if="event.rooms" class="location">
+            <div v-for="(room, index) in event.rooms" :key="room">
+              <a
+                v-if="event.mapsLinks[index]"
+                class="room"
+                :href="event.mapsLinks[index]"
+                target="_blank"
+              >
+                <span v-if="index < event.rooms.length - 1"
+                  >{{ room }},&nbsp;</span
+                >
+                <span v-else>{{ room }}</span>
+              </a>
+              <div v-else>
+                <span v-if="index < event.rooms.length - 1"
+                  >{{ room }},&nbsp;</span
+                >
+                <span v-else>{{ room }}</span>
+              </div>
+            </div>
           </div>
 
           <div class="starts-in">

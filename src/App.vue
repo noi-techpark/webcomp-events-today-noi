@@ -171,7 +171,6 @@ export default {
         ) {
           const startDate = new Date(element.RoomStartDate);
           const endDate = new Date(element.RoomEndDate);
-          const room = element.SpaceDescList[0];
 
           let event = {
             title: this.devMode
@@ -181,9 +180,11 @@ export default {
             companyName: this.devMode ? this.lorem : element.CompanyName,
             webAddress: element.EventWebAddress,
             time: this.formatTime(startDate, endDate),
-            room: element.SpaceDescList.sort().join(", "),
+            rooms: element.SpaceDescList.sort(),
             startDate: this.formatDate(startDate),
-            mapsLink: this.roomMapping[room],
+            mapsLinks: element.SpaceDescList.sort().map(
+              (r) => this.roomMapping[r]
+            ),
           };
           this.events.push(event);
         }
