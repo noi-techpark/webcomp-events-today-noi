@@ -227,6 +227,13 @@ a > div {
   margin: 15px;
 }
 
+@media (min-width: 1026px) and (max-width: 1500px) {
+  .location {
+    font-size: 1.2em; /* or whatever size you prefer */
+    white-space: normal;
+  }
+}
+
 a {
   color: #000;
   text-decoration: underline;
