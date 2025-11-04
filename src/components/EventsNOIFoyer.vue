@@ -220,19 +220,20 @@ a > div {
   color: #fff;
   background: #000;
   padding: 12px 20px;
-  font-size: 1.6em;
+  font-size: 1.5em;
   font-weight: bold;
   display: flex;
   justify-content: center;
   margin: 15px;
+  white-space: normal;
 }
 
-@media (min-width: 1026px) and (max-width: 1500px) {
+/* @media (min-width: 1026px) and (max-width: 1500px) {
   .location {
-    font-size: 1.2em; /* or whatever size you prefer */
+    font-size: 1.5em;
     white-space: normal;
   }
-}
+} */
 
 a {
   color: #000;
