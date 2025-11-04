@@ -225,15 +225,10 @@ a > div {
   display: flex;
   justify-content: center;
   margin: 15px;
-  white-space: normal;
+  /* white-space: normal; */
+  max-width: 650px;
+  flex-wrap: wrap;
 }
-
-/* @media (min-width: 1026px) and (max-width: 1500px) {
-  .location {
-    font-size: 1.5em;
-    white-space: normal;
-  }
-} */
 
 a {
   color: #000;
