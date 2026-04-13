@@ -129,7 +129,6 @@ export default {
     getEventLocation() {
       const urlParams = new URLSearchParams(window.location.search);
       const eventsParam = urlParams.get("events");
-      console.log(eventsParam);
 
       if (eventsParam != null && eventsParam.toUpperCase() === "NOIBRUNECK") {
         return "NOIBRUNECK";
@@ -139,39 +138,62 @@ export default {
     },
     fetchData() {
       const baseURL =
-        "https://tourism.api.opendatahub.com/v1/EventShort/GetbyRoomBooked?";
-
-      const endDate = new Date();
-      endDate.setUTCHours(24, 0, 0, 0);
+        "https://tourism.api.opendatahub.testingmachine.eu/v1/Event?";
 
       const params = new URLSearchParams([
-        ["startdate", new Date().getTime()],
-        ["eventlocation", this.getEventLocation()],
+        ["tagfilter", "eventlocation:noibruneck"],
+        ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
-        [
-          "publishedon",
-          this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "Nobis",
-        ],
-        ["sortorder", "ASC"],
+        ["sort", "upcomping"],
+        ["active", "true"],
+        ["publishedon", "nobis"],
+        ["pagesize", "100"],
+        ["optimizedates", "true"],
         ["origin", "webcomp-events-today-noi"],
+        ["denormalize", "true"],
       ]);
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL + params, false);
       xhttp.send();
+      const items = (JSON.parse(xhttp.response).Items || []).flat();
+
+      // obtaining the list of venues of NOI
+      const VenueURL =
+        "https://tourism.api.opendatahub.testingmachine.eu/v1/Venue?&source=noi";
+
+      const xhttpVenue = new XMLHttpRequest();
+      xhttpVenue.open("GET", VenueURL, false);
+      xhttpVenue.send();
+
+      //Chosing the venues of NOI Bz or NOI Bruneck
+      const Venues =
+        this.getEventLocation() != "NOI"
+          ? JSON.parse(xhttpVenue.response).Items[
+              JSON.parse(xhttpVenue.response).Items.findIndex(
+                (r) =>
+                  r.Id === "urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea"
+              )
+            ]
+          : JSON.parse(xhttpVenue.response).Items[
+              JSON.parse(xhttpVenue.response).Items.findIndex(
+                (r) =>
+                  r.Id ==
+                  "urn:venue:noibruneck:aa571d89-36c1-50fa-9400-7f15b1ae814b"
+              )
+            ];
 
       this.events = [];
-
-      const items = JSON.parse(xhttp.response);
       items.forEach((element) => {
         if (
           this.room == null ||
           this.room === "" ||
-          element.SpaceDescList.indexOf(this.room) > -1
+          element.EvenDate[0].VenueRoomDetailsIds.indexOf(this.room) > -1
         ) {
-          const startDate = new Date(element.RoomStartDate);
-          const endDate = new Date(element.RoomEndDate);
+          const startDate = new Date(element.EventDate[0].FromUTC);
+          const endDate = new Date(element.EventDate[0].ToUTC);
 
+          //Creation of the event
           let event = {
             title: this.devMode
               ? { en: this.lorem, it: this.lorem, de: this.lorem }
@@ -180,15 +202,32 @@ export default {
                   de: element.Detail.de?.Title,
                   it: element.Detail.it?.Title,
                 },
-            subTitle: this.devMode ? this.lorem : element.Subtitle,
-            companyName: this.devMode ? this.lorem : element.CompanyName,
-            webAddress: element.EventWebAddress,
+            subTitle: this.devMode
+              ? this.lorem
+              : element.EventDate[0].EventDateAdditionalInfo?.en.Description,
+            companyName: this.devMode
+              ? this.lorem
+              : element.OrganizerInfos.en.CompanyName,
+            webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
-            rooms: element.SpaceDescList.sort(),
+            rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
+              .flat()
+              .map((room) => {
+                return Venues.RoomDetails[
+                  Venues.RoomDetails.findIndex((r) => r.Id === room)
+                ].Shortname;
+              })
+              .map((r) => r.replace("NOI ", "")),
             startDate: this.formatDate(startDate),
-            mapsLinks: element.SpaceDescList.sort().map(
-              (r) => this.roomMapping[r]
-            ),
+            mapsLinks: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
+              .flat()
+              .map((room) => {
+                return Venues.RoomDetails[
+                  Venues.RoomDetails.findIndex((r) => r.Id === room)
+                ].Shortname;
+              })
+              .map((r) => r.replace("NOI ", ""))
+              .map((r) => this.roomMapping[r]),
           };
           this.events.push(event);
         }
