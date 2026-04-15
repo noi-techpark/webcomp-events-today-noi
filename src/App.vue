@@ -9,7 +9,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOIFoyer
       v-if="theme === 'foyer'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         currentDate: currentDate(),
@@ -19,7 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOID1
       v-else-if="theme === 'd1'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         timestamp: timestamp,
@@ -29,7 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOI
       v-else
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
       }"
@@ -58,10 +55,6 @@ export default {
       type: String,
       default: "Source Sans Pro",
     },
-    devMode: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: function () {
     return {
@@ -71,8 +64,6 @@ export default {
       timestamp: "",
       languages: ["en", "de", "it"],
       currentLanguage: "en",
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
   components: {
@@ -243,8 +234,6 @@ export default {
                   "urn:venue:noibruneck:aa571d89-36c1-50fa-9400-7f15b1ae814b"
               )
             ];
-
-      //console.log(items);
 
       this.events = [];
       items.forEach((element) => {
