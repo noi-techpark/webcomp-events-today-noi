@@ -106,6 +106,64 @@ export default {
       const response = await fetch(url);
       return await response.text();
     },
+    getLanguageFallbackOrder(language) {
+      const fallbackOrder = {
+        en: ["en", "it", "de"],
+        de: ["de", "it", "en"],
+        it: ["it", "de", "en"],
+      };
+      return fallbackOrder[language] || fallbackOrder.en;
+    },
+
+    getLocalizedValue(values, language) {
+      if (!values || typeof values !== "object") {
+        return null;
+      }
+
+      const order = this.getLanguageFallbackOrder(language);
+
+      for (const lang of order) {
+        const value = values[lang];
+        if (typeof value === "string" && value.trim() !== "") {
+          return value.trim();
+        }
+      }
+
+      return null;
+    },
+
+    buildLocalizedFields(element) {
+      const localizedTitle = {
+        en: this.getLocalizedValue(
+          {
+            en: element.Detail?.en?.Title,
+            de: element.Detail?.de?.Title,
+            it: element.Detail?.it?.Title,
+          },
+          "en"
+        ),
+        de: this.getLocalizedValue(
+          {
+            en: element.Detail?.en?.Title,
+            de: element.Detail?.de?.Title,
+            it: element.Detail?.it?.Title,
+          },
+          "de"
+        ),
+        it: this.getLocalizedValue(
+          {
+            en: element.Detail?.en?.Title,
+            de: element.Detail?.de?.Title,
+            it: element.Detail?.it?.Title,
+          },
+          "it"
+        ),
+      };
+
+      return {
+        title: localizedTitle,
+      };
+    },
     getTheme() {
       const urlParams = new URLSearchParams(window.location.search);
       const location = urlParams.get("location");
@@ -141,12 +199,15 @@ export default {
         "https://tourism.api.opendatahub.testingmachine.eu/v1/Event?";
 
       const params = new URLSearchParams([
-        ["tagfilter", "eventlocation:noibruneck"],
+        ["tagfilter", "eventlocation:noi"],
         ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
         ["sort", "upcomping"],
         ["active", "true"],
-        ["publishedon", "nobis"],
+        [
+          "publishedon",
+          this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "nobis",
+        ],
         ["pagesize", "100"],
         ["optimizedates", "true"],
         ["origin", "webcomp-events-today-noi"],
@@ -168,7 +229,7 @@ export default {
 
       //Chosing the venues of NOI Bz or NOI Bruneck
       const Venues =
-        this.getEventLocation() != "NOI"
+        this.getEventLocation() == "NOI"
           ? JSON.parse(xhttpVenue.response).Items[
               JSON.parse(xhttpVenue.response).Items.findIndex(
                 (r) =>
@@ -183,6 +244,8 @@ export default {
               )
             ];
 
+      //console.log(items);
+
       this.events = [];
       items.forEach((element) => {
         if (
@@ -193,21 +256,22 @@ export default {
           const startDate = new Date(element.EventDate[0].FromUTC);
           const endDate = new Date(element.EventDate[0].ToUTC);
 
+          const localizedFields = this.buildLocalizedFields(element);
+
+          if (
+            !localizedFields.title.en &&
+            !localizedFields.title.de &&
+            !localizedFields.title.it
+          ) {
+            return;
+          }
+
           //Creation of the event
           let event = {
-            title: this.devMode
-              ? { en: this.lorem, it: this.lorem, de: this.lorem }
-              : {
-                  en: element.Detail.en?.Title,
-                  de: element.Detail.de?.Title,
-                  it: element.Detail.it?.Title,
-                },
-            subTitle: this.devMode
-              ? this.lorem
-              : element.EventDate[0].EventDateAdditionalInfo?.en.Description,
-            companyName: this.devMode
-              ? this.lorem
-              : element.OrganizerInfos.en.CompanyName,
+            title: localizedFields.title,
+            subTitle:
+              element.EventDate[0].EventDateAdditionalInfo?.en.Description,
+            companyName: element.OrganizerInfos.en.CompanyName,
             webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
             rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
