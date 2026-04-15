@@ -51,13 +51,13 @@ section.
 Get a copy of the repository:
 
 ```bash
-git clone git@github.com:noi-techpark/webcomp-events-today.git
+git clone git@github.com:noi-techpark/webcomp-events-today-noi.git
 ```
 
 Change directory:
 
 ```bash
-cd webcomp-events-today/
+cd webcomp-events-today-noi/
 ```
 
 ### Dependencies
