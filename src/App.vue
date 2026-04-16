@@ -124,31 +124,15 @@ export default {
     },
 
     buildLocalizedFields(element) {
+      const titles = {
+        en: element.Detail?.en?.Title,
+        de: element.Detail?.de?.Title,
+        it: element.Detail?.it?.Title,
+      };
       const localizedTitle = {
-        en: this.getLocalizedValue(
-          {
-            en: element.Detail?.en?.Title,
-            de: element.Detail?.de?.Title,
-            it: element.Detail?.it?.Title,
-          },
-          "en"
-        ),
-        de: this.getLocalizedValue(
-          {
-            en: element.Detail?.en?.Title,
-            de: element.Detail?.de?.Title,
-            it: element.Detail?.it?.Title,
-          },
-          "de"
-        ),
-        it: this.getLocalizedValue(
-          {
-            en: element.Detail?.en?.Title,
-            de: element.Detail?.de?.Title,
-            it: element.Detail?.it?.Title,
-          },
-          "it"
-        ),
+        en: this.getLocalizedValue(titles, "en"),
+        de: this.getLocalizedValue(titles, "de"),
+        it: this.getLocalizedValue(titles, "it"),
       };
 
       return {
