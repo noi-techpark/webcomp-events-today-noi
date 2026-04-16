@@ -190,7 +190,12 @@ export default {
         "https://tourism.api.opendatahub.testingmachine.eu/v1/Event?";
 
       const params = new URLSearchParams([
-        ["tagfilter", "eventlocation:noi"],
+        [
+          "tagfilter",
+          this.getEventLocation() == "NOI"
+            ? "eventlocation:noi"
+            : "eventlocation:noibruneck",
+        ],
         ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
         ["sort", "upcomping"],
