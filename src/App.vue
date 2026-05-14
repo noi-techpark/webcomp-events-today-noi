@@ -294,13 +294,25 @@ export default {
     },
     fetchRoomMapping() {
       const baseURL =
-        "https://tourism.opendatahub.com/v1/EventShort/RoomMapping?language=en";
+        "https://tourism.api.opendatahub.testingmachine.eu/v1/Venue?idlist=urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea&denormalize=true&fields=RoomDetails.[*].Shortname,RoomDetails.[*].Mapping.maps.roommapping";
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL, false);
       xhttp.send();
 
-      return JSON.parse(xhttp.response);
+      const result = {};
+
+      const items = JSON.parse(xhttp.response).Items;
+
+      items.forEach((item) => {
+        const shortname = item["RoomDetails.[*].Shortname"];
+        const mapping = item["RoomDetails.[*].Mapping.maps.roommapping"];
+
+        if (shortname && mapping) {
+          result[shortname] = mapping;
+        }
+      });
+      return result;
     },
 
     formatTime(startDate, endDate) {
