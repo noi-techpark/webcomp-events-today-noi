@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC0-1.0
 
 [![REUSE Compliance](https://github.com/noi-techpark/webcomp-events-today/actions/workflows/reuse.yml/badge.svg)](https://github.com/noi-techpark/odh-docs/wiki/REUSE#badges)
 
-Events Today is a web component that displays a list of events that are happening at NOI Techpark. It fetches data from the [EventShort API](https://tourism.opendatahub.com/swagger/index.html#/EventShort)  and displays the events in a simple, easy-to-read format.<br>
+Events Today is a web component that displays a list of events that are happening at NOI Techpark. It fetches data from the [Event API](https://tourism.opendatahub.com/swagger/index.html#/Event)  and displays the events in a simple, easy-to-read format.<br>
 
 
 **Table of Contents**
@@ -31,6 +31,11 @@ Default value is empty, so all rooms are shown.
 <events-today room="Seminar 1"></events-today>
 ```
 
+#### <b>denormalize</b>
+
+A single event can be associated with multiple rooms, and the web component creates one event per room. The query parameter `denormalize=true` ensures that the data is expanded so that a separate event is generated for each room before it is passed to the web component.
+As a result, the web component receives only events related to a single room, avoiding duplicate or redundant events.
+
 ## Getting started
 
 These instructions will get you a copy of the project up and running
@@ -51,13 +56,13 @@ section.
 Get a copy of the repository:
 
 ```bash
-git clone git@github.com:noi-techpark/webcomp-events-today.git
+git clone git@github.com:noi-techpark/webcomp-events-today-noi.git
 ```
 
 Change directory:
 
 ```bash
-cd webcomp-events-today/
+cd webcomp-events-today-noi/
 ```
 
 ### Dependencies

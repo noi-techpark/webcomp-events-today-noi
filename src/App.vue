@@ -176,7 +176,7 @@ export default {
       const params = new URLSearchParams([
         [
           "tagfilter",
-          this.getEventLocation() == "NOI"
+          this.getEventLocation() === "NOI"
             ? "eventlocation:noi"
             : "eventlocation:noibruneck",
         ],
@@ -188,7 +188,7 @@ export default {
           "publishedon",
           this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "nobis",
         ],
-        ["pagesize", "100"],
+        ["pagesize", "0"],
         ["optimizedates", "true"],
         ["origin", "webcomp-events-today-noi"],
         ["denormalize", "true"],
@@ -209,7 +209,7 @@ export default {
 
       //Chosing the venues of NOI Bz or NOI Bruneck
       const Venues =
-        this.getEventLocation() == "NOI"
+        this.getEventLocation() === "NOI"
           ? JSON.parse(xhttpVenue.response).Items[
               JSON.parse(xhttpVenue.response).Items.findIndex(
                 (r) =>
@@ -219,7 +219,7 @@ export default {
           : JSON.parse(xhttpVenue.response).Items[
               JSON.parse(xhttpVenue.response).Items.findIndex(
                 (r) =>
-                  r.Id ==
+                  r.Id ===
                   "urn:venue:noibruneck:aa571d89-36c1-50fa-9400-7f15b1ae814b"
               )
             ];
@@ -292,13 +292,25 @@ export default {
     },
     fetchRoomMapping() {
       const baseURL =
-        "https://tourism.opendatahub.com/v1/EventShort/RoomMapping?language=en";
+        "https://tourism.api.opendatahub.testingmachine.eu/v1/Venue?idlist=urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea&denormalize=true&fields=RoomDetails.[*].Shortname,RoomDetails.[*].Mapping.maps.roommapping";
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL, false);
       xhttp.send();
 
-      return JSON.parse(xhttp.response);
+      const result = {};
+
+      const items = JSON.parse(xhttp.response).Items;
+
+      items.forEach((item) => {
+        const shortname = item["RoomDetails.[*].Shortname"];
+        const mapping = item["RoomDetails.[*].Mapping.maps.roommapping"];
+
+        if (shortname && mapping) {
+          result[shortname] = mapping;
+        }
+      });
+      return result;
     },
 
     formatTime(startDate, endDate) {
