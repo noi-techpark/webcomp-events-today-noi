@@ -9,7 +9,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOIFoyer
       v-if="theme === 'foyer'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         currentDate: currentDate(),
@@ -19,7 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOID1
       v-else-if="theme === 'd1'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         timestamp: timestamp,
@@ -29,7 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOI
       v-else
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
       }"
@@ -58,10 +55,6 @@ export default {
       type: String,
       default: "Source Sans Pro",
     },
-    devMode: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: function () {
     return {
@@ -71,8 +64,6 @@ export default {
       timestamp: "",
       languages: ["en", "de", "it"],
       currentLanguage: "en",
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
   components: {
@@ -106,6 +97,50 @@ export default {
       const response = await fetch(url);
       return await response.text();
     },
+
+    getLanguageFallbackOrder(language) {
+      const fallbackOrder = {
+        en: ["en", "it", "de"],
+        de: ["de", "it", "en"],
+        it: ["it", "de", "en"],
+      };
+      return fallbackOrder[language] || fallbackOrder.en;
+    },
+
+    getLocalizedValue(values, language) {
+      if (!values || typeof values !== "object") {
+        return null;
+      }
+
+      const order = this.getLanguageFallbackOrder(language);
+
+      for (const lang of order) {
+        const value = values[lang];
+        if (typeof value === "string" && value.trim() !== "") {
+          return value.trim();
+        }
+      }
+
+      return null;
+    },
+
+    buildLocalizedFields(element) {
+      const titles = {
+        en: element.Detail?.en?.Title,
+        de: element.Detail?.de?.Title,
+        it: element.Detail?.it?.Title,
+      };
+      const localizedTitle = {
+        en: this.getLocalizedValue(titles, "en"),
+        de: this.getLocalizedValue(titles, "de"),
+        it: this.getLocalizedValue(titles, "it"),
+      };
+
+      return {
+        title: localizedTitle,
+      };
+    },
+
     getTheme() {
       const urlParams = new URLSearchParams(window.location.search);
       const location = urlParams.get("location");
@@ -141,13 +176,20 @@ export default {
         "https://tourism.api.opendatahub.testingmachine.eu/v1/Event?";
 
       const params = new URLSearchParams([
-        ["tagfilter", "eventlocation:noibruneck"],
+        [
+          "tagfilter",
+          this.getEventLocation() === "NOI"
+            ? "eventlocation:noi"
+            : "eventlocation:noibruneck",
+        ],
         ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
         ["sort", "upcomping"],
         ["active", "true"],
-        ["publishedon", "nobis"],
-        ["pagesize", "100"],
+        [
+          "publishedon",
+          this.getEventLocation() === "NOI" ? "today.noi.bz.it" : "nobis",
+        ],
         ["optimizedates", "true"],
         ["origin", "webcomp-events-today-noi"],
         ["denormalize", "true"],
@@ -168,7 +210,7 @@ export default {
 
       //Chosing the venues of NOI Bz or NOI Bruneck
       const Venues =
-        this.getEventLocation() != "NOI"
+        this.getEventLocation() === "NOI"
           ? JSON.parse(xhttpVenue.response).Items[
               JSON.parse(xhttpVenue.response).Items.findIndex(
                 (r) =>
@@ -178,7 +220,7 @@ export default {
           : JSON.parse(xhttpVenue.response).Items[
               JSON.parse(xhttpVenue.response).Items.findIndex(
                 (r) =>
-                  r.Id ==
+                  r.Id ===
                   "urn:venue:noibruneck:aa571d89-36c1-50fa-9400-7f15b1ae814b"
               )
             ];
@@ -193,21 +235,23 @@ export default {
           const startDate = new Date(element.EventDate[0].FromUTC);
           const endDate = new Date(element.EventDate[0].ToUTC);
 
+          const localizedFields = this.buildLocalizedFields(element);
+
+          if (
+            !localizedFields.title.en &&
+            !localizedFields.title.de &&
+            !localizedFields.title.it
+          ) {
+            return;
+          }
+
           //Creation of the event
           let event = {
-            title: this.devMode
-              ? { en: this.lorem, it: this.lorem, de: this.lorem }
-              : {
-                  en: element.Detail.en?.Title,
-                  de: element.Detail.de?.Title,
-                  it: element.Detail.it?.Title,
-                },
-            subTitle: this.devMode
-              ? this.lorem
-              : element.EventDate[0].EventDateAdditionalInfo?.en.Description,
-            companyName: this.devMode
-              ? this.lorem
-              : element.OrganizerInfos.en.CompanyName,
+            title: localizedFields.title,
+            subTitle: element.EventDate[0].EventDateAdditionalInfo
+              ? element.EventDate[0].EventDateAdditionalInfo?.en.Description
+              : null,
+            companyName: element.OrganizerInfos.en.CompanyName,
             webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
             rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
