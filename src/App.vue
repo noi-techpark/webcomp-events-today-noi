@@ -38,6 +38,8 @@ import EventsNOI from "./components/EventsNOI.vue";
 import EventsNOID1 from "./components/EventsNOID1.vue";
 import EventsNOIFoyer from "./components/EventsNOIFoyer.vue";
 
+import config from "./components/config.js";
+
 export default {
   name: "App",
   props: {
@@ -170,8 +172,7 @@ export default {
       return this.eventLocation;
     },
     fetchData() {
-      const baseURL =
-        "https://tourism.api.opendatahub.testingmachine.eu/v1/Event?";
+      const baseURL = config.API_BASE_URL + "/Event?";
 
       const params = new URLSearchParams([
         [
@@ -200,8 +201,7 @@ export default {
       const items = (JSON.parse(xhttp.response).Items || []).flat();
 
       // obtaining the list of venues of NOI
-      const VenueURL =
-        "https://tourism.api.opendatahub.testingmachine.eu/v1/Venue?&source=noi";
+      const VenueURL = config.API_BASE_URL + "/Venue?&source=noi";
 
       const xhttpVenue = new XMLHttpRequest();
       xhttpVenue.open("GET", VenueURL, false);
@@ -292,7 +292,8 @@ export default {
     },
     fetchRoomMapping() {
       const baseURL =
-        "https://tourism.api.opendatahub.testingmachine.eu/v1/Venue?idlist=urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea&denormalize=true&fields=RoomDetails.[*].Shortname,RoomDetails.[*].Mapping.maps.roommapping";
+        config.API_BASE_URL +
+        "/Venue?idlist=urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea&denormalize=true&fields=RoomDetails.[*].Shortname,RoomDetails.[*].Mapping.maps.roommapping";
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL, false);
