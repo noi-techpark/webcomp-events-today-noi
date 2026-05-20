@@ -9,7 +9,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOIFoyer
       v-if="theme === 'foyer'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         currentDate: currentDate(),
@@ -19,7 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOID1
       v-else-if="theme === 'd1'"
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
         timestamp: timestamp,
@@ -29,7 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <EventsNOI
       v-else
       :options="{
-        devMode: devMode,
         events: events,
         currentLanguage: currentLanguage,
       }"
@@ -40,6 +37,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import EventsNOI from "./components/EventsNOI.vue";
 import EventsNOID1 from "./components/EventsNOID1.vue";
 import EventsNOIFoyer from "./components/EventsNOIFoyer.vue";
+
+import config from "./components/config.js";
 
 export default {
   name: "App",
@@ -58,10 +57,6 @@ export default {
       type: String,
       default: "Source Sans Pro",
     },
-    devMode: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: function () {
     return {
@@ -71,8 +66,6 @@ export default {
       timestamp: "",
       languages: ["en", "de", "it"],
       currentLanguage: "en",
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
   components: {
@@ -106,6 +99,48 @@ export default {
       const response = await fetch(url);
       return await response.text();
     },
+    getLanguageFallbackOrder(language) {
+      const fallbackOrder = {
+        en: ["en", "it", "de"],
+        de: ["de", "it", "en"],
+        it: ["it", "de", "en"],
+      };
+      return fallbackOrder[language] || fallbackOrder.en;
+    },
+
+    getLocalizedValue(values, language) {
+      if (!values || typeof values !== "object") {
+        return null;
+      }
+
+      const order = this.getLanguageFallbackOrder(language);
+
+      for (const lang of order) {
+        const value = values[lang];
+        if (typeof value === "string" && value.trim() !== "") {
+          return value.trim();
+        }
+      }
+
+      return null;
+    },
+
+    buildLocalizedFields(element) {
+      const titles = {
+        en: element.Detail?.en?.Title,
+        de: element.Detail?.de?.Title,
+        it: element.Detail?.it?.Title,
+      };
+      const localizedTitle = {
+        en: this.getLocalizedValue(titles, "en"),
+        de: this.getLocalizedValue(titles, "de"),
+        it: this.getLocalizedValue(titles, "it"),
+      };
+
+      return {
+        title: localizedTitle,
+      };
+    },
     getTheme() {
       const urlParams = new URLSearchParams(window.location.search);
       const location = urlParams.get("location");
@@ -129,7 +164,6 @@ export default {
     getEventLocation() {
       const urlParams = new URLSearchParams(window.location.search);
       const eventsParam = urlParams.get("events");
-      console.log(eventsParam);
 
       if (eventsParam != null && eventsParam.toUpperCase() === "NOIBRUNECK") {
         return "NOIBRUNECK";
@@ -138,57 +172,102 @@ export default {
       return this.eventLocation;
     },
     fetchData() {
-      const baseURL =
-        "https://tourism.api.opendatahub.com/v1/EventShort/GetbyRoomBooked?";
-
-      const endDate = new Date();
-      endDate.setUTCHours(24, 0, 0, 0);
+      const baseURL = config.API_BASE_URL + "/Event?";
 
       const params = new URLSearchParams([
-        ["startdate", new Date().getTime()],
-        ["eventlocation", this.getEventLocation()],
+        ["tagfilter", this.getEventLocation() === "NOI" ? "noi" : "noibruneck"],
+        ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
+        ["sort", "upcomping"],
+        ["active", "true"],
         [
           "publishedon",
-          this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "Nobis",
+          this.getEventLocation() === "NOI" ? "today.noi.bz.it" : "nobis",
         ],
-        ["sortorder", "ASC"],
+        ["pagesize", "0"],
+        ["optimizedates", "true"],
         ["origin", "webcomp-events-today-noi"],
+        ["denormalize", "true"],
       ]);
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL + params, false);
       xhttp.send();
+      const items = (JSON.parse(xhttp.response).Items || []).flat();
+
+      // obtaining the list of venues of NOI
+      const VenueURL =
+        this.getEventLocation() === "NOI"
+          ? config.API_BASE_URL + "/Venue?&source=noi"
+          : config.API_BASE_URL + "/Venue?&source=nobis";
+
+      const xhttpVenue = new XMLHttpRequest();
+      xhttpVenue.open("GET", VenueURL, false);
+      xhttpVenue.send();
+
+      //Chosing the venues of NOI Bz or NOI Bruneck
+      const Venues =
+        this.getEventLocation() === "NOI"
+          ? JSON.parse(xhttpVenue.response).Items[
+              JSON.parse(xhttpVenue.response).Items.findIndex(
+                (r) =>
+                  r.Id === "urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea"
+              )
+            ]
+          : JSON.parse(xhttpVenue.response).Items[
+              JSON.parse(xhttpVenue.response).Items.findIndex(
+                (r) =>
+                  r.Id ===
+                  "urn:venue:noibruneck:aa571d89-36c1-50fa-9400-7f15b1ae814b"
+              )
+            ];
 
       this.events = [];
-
-      const items = JSON.parse(xhttp.response);
       items.forEach((element) => {
         if (
           this.room == null ||
           this.room === "" ||
-          element.SpaceDescList.indexOf(this.room) > -1
+          element.EvenDate[0].VenueRoomDetailsIds.indexOf(this.room) > -1
         ) {
-          const startDate = new Date(element.RoomStartDate);
-          const endDate = new Date(element.RoomEndDate);
+          const startDate = new Date(element.EventDate[0].FromUTC);
+          const endDate = new Date(element.EventDate[0].ToUTC);
 
+          const localizedFields = this.buildLocalizedFields(element);
+
+          if (
+            !localizedFields.title.en &&
+            !localizedFields.title.de &&
+            !localizedFields.title.it
+          ) {
+            return;
+          }
+
+          //Creation of the event
           let event = {
-            title: this.devMode
-              ? { en: this.lorem, it: this.lorem, de: this.lorem }
-              : {
-                  en: element.Detail.en?.Title,
-                  de: element.Detail.de?.Title,
-                  it: element.Detail.it?.Title,
-                },
-            subTitle: this.devMode ? this.lorem : element.Subtitle,
-            companyName: this.devMode ? this.lorem : element.CompanyName,
-            webAddress: element.EventWebAddress,
+            title: localizedFields.title,
+            subTitle:
+              element.EventDate[0].EventDateAdditionalInfo?.en.Description,
+            companyName: element.OrganizerInfos.en.CompanyName,
+            webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
-            rooms: element.SpaceDescList.sort(),
+            rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
+              .flat()
+              .map((room) => {
+                return Venues.RoomDetails[
+                  Venues.RoomDetails.findIndex((r) => r.Id === room)
+                ].Shortname;
+              })
+              .map((r) => r.replace("NOI ", "")),
             startDate: this.formatDate(startDate),
-            mapsLinks: element.SpaceDescList.sort().map(
-              (r) => this.roomMapping[r]
-            ),
+            mapsLinks: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
+              .flat()
+              .map((room) => {
+                return Venues.RoomDetails[
+                  Venues.RoomDetails.findIndex((r) => r.Id === room)
+                ].Shortname;
+              })
+              .map((r) => r.replace("NOI ", ""))
+              .map((r) => this.roomMapping[r]),
           };
           this.events.push(event);
         }
@@ -211,13 +290,26 @@ export default {
     },
     fetchRoomMapping() {
       const baseURL =
-        "https://tourism.opendatahub.com/v1/EventShort/RoomMapping?language=en";
+        config.API_BASE_URL +
+        "/Venue?idlist=urn:venue:noi:6b3f0a14-3c5b-5d09-81f3-3ebe5b7885ea&denormalize=true&fields=RoomDetails.[*].Shortname,RoomDetails.[*].Mapping.maps.roommapping";
 
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", baseURL, false);
       xhttp.send();
 
-      return JSON.parse(xhttp.response);
+      const result = {};
+
+      const items = JSON.parse(xhttp.response).Items;
+
+      items.forEach((item) => {
+        const shortname = item["RoomDetails.[*].Shortname"];
+        const mapping = item["RoomDetails.[*].Mapping.maps.roommapping"];
+
+        if (shortname && mapping) {
+          result[shortname] = mapping;
+        }
+      });
+      return result;
     },
 
     formatTime(startDate, endDate) {
