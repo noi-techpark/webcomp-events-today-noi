@@ -175,19 +175,14 @@ export default {
       const baseURL = config.API_BASE_URL + "/Event?";
 
       const params = new URLSearchParams([
-        [
-          "tagfilter",
-          this.getEventLocation() === "NOI"
-            ? "eventlocation:noi"
-            : "eventlocation:noibruneck",
-        ],
+        ["tagfilter", this.getEventLocation() === "NOI" ? "noi" : "noibruneck"],
         ["begindate", Date.now().toString()],
         ["datetimeformat", "uxtimestamp"],
         ["sort", "upcomping"],
         ["active", "true"],
         [
           "publishedon",
-          this.getEventLocation() == "NOI" ? "today.noi.bz.it" : "nobis",
+          this.getEventLocation() === "NOI" ? "today.noi.bz.it" : "nobis",
         ],
         ["pagesize", "0"],
         ["optimizedates", "true"],
@@ -201,7 +196,10 @@ export default {
       const items = (JSON.parse(xhttp.response).Items || []).flat();
 
       // obtaining the list of venues of NOI
-      const VenueURL = config.API_BASE_URL + "/Venue?&source=noi";
+      const VenueURL =
+        this.getEventLocation() === "NOI"
+          ? config.API_BASE_URL + "/Venue?&source=noi"
+          : config.API_BASE_URL + "/Venue?&source=nobis";
 
       const xhttpVenue = new XMLHttpRequest();
       xhttpVenue.open("GET", VenueURL, false);
