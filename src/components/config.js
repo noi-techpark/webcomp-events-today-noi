@@ -4,5 +4,5 @@
 
 export default {
   API_BASE_URL: process.env.VUE_APP_TOURISM_BASE_PATH,
-  ORIGIN: "webcomp-events-today",
+  ORIGIN: "webcomp-events-today-noi",
 };
