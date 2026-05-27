@@ -239,15 +239,22 @@ export default {
             !localizedFields.title.de &&
             !localizedFields.title.it
           ) {
-            return;
+            localizedFields.title = {
+              en: "No title",
+              de: "Kein Titel",
+              it: "Nessun titolo",
+            };
           }
 
           //Creation of the event
           let event = {
             title: localizedFields.title,
-            subTitle:
-              element.EventDate[0].EventDateAdditionalInfo?.en.Description,
-            companyName: element.OrganizerInfos.en.CompanyName,
+            subTitle: element.EventDate[0].EventDateAdditionalInfo
+              ? element.EventDate[0].EventDateAdditionalInfo?.en.Description
+              : null,
+            companyName: element.OrganizerInfos
+              ? element.OrganizerInfos.en.CompanyName
+              : null,
             webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
             rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
