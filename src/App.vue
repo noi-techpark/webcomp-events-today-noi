@@ -224,10 +224,19 @@ export default {
 
       this.events = [];
       items.forEach((element) => {
+        const stanze = element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
+          .flat()
+          .map((room) => {
+            return Venues.RoomDetails[
+              Venues.RoomDetails.findIndex((r) => r.Id === room)
+            ].Shortname;
+          });
+
+        // manually filter for rooms
         if (
           this.room == null ||
           this.room === "" ||
-          element.EvenDate[0].VenueRoomDetailsIds.indexOf(this.room) > -1
+          stanze.includes(this.room)
         ) {
           const startDate = new Date(element.EventDate[0].FromUTC);
           const endDate = new Date(element.EventDate[0].ToUTC);
@@ -257,14 +266,7 @@ export default {
               : null,
             webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
-            rooms: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
-              .flat()
-              .map((room) => {
-                return Venues.RoomDetails[
-                  Venues.RoomDetails.findIndex((r) => r.Id === room)
-                ].Shortname;
-              })
-              .map((r) => r.replace("NOI ", "")),
+            rooms: stanze,
             startDate: this.formatDate(startDate),
             mapsLinks: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
               .flat()
@@ -273,7 +275,6 @@ export default {
                   Venues.RoomDetails.findIndex((r) => r.Id === room)
                 ].Shortname;
               })
-              .map((r) => r.replace("NOI ", ""))
               .map((r) => this.roomMapping[r]),
           };
           this.events.push(event);
