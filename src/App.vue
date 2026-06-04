@@ -227,9 +227,12 @@ export default {
         const stanze = element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
           .flat()
           .map((room) => {
-            return Venues.RoomDetails[
-              Venues.RoomDetails.findIndex((r) => r.Id === room)
-            ].Shortname;
+            const rd = Venues.RoomDetails.find((r) => r.Id === room);
+            if (!rd)
+              console.warn(
+                `RoomDetails not found — event: ${element.Id}, room: ${room}`
+              );
+            return rd?.Shortname;
           });
 
         // manually filter for rooms
@@ -271,15 +274,43 @@ export default {
             mapsLinks: element.EventDate.map((ed) => ed.VenueRoomDetailsIds)
               .flat()
               .map((room) => {
-                return Venues.RoomDetails[
-                  Venues.RoomDetails.findIndex((r) => r.Id === room)
-                ].Shortname;
+                const rd = Venues.RoomDetails.find((r) => r.Id === room);
+                if (!rd)
+                  console.warn(
+                    `RoomDetails not found — event: ${element.Id}, room: ${room}`
+                  );
+                return rd?.Shortname;
               })
               .map((r) => this.roomMapping[r]),
           };
           this.events.push(event);
         }
       });
+
+      // group events that are identical except for rooms (e.g. same talk split across multiple rooms)
+      const grouped = [];
+      const groupKey = (e) =>
+        [
+          e.title.en,
+          e.title.de,
+          e.title.it,
+          e.subTitle,
+          e.companyName,
+          e.time,
+          e.startDate,
+        ].join("|");
+
+      this.events.forEach((event) => {
+        const key = groupKey(event);
+        const existing = grouped.find((e) => groupKey(e) === key);
+        if (existing) {
+          existing.rooms = [...existing.rooms, ...event.rooms];
+          existing.mapsLinks = [...existing.mapsLinks, ...event.mapsLinks];
+        } else {
+          grouped.push({ ...event });
+        }
+      });
+      this.events = grouped;
 
       // if no events are present, add "no events happening right now" placeholder
       if (this.events.length == 0) {
