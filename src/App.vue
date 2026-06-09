@@ -264,9 +264,7 @@ export default {
             subTitle: element.EventDate[0].EventDateAdditionalInfo
               ? element.EventDate[0].EventDateAdditionalInfo?.en.Description
               : null,
-            companyName: element.OrganizerInfos
-              ? element.OrganizerInfos.en.CompanyName
-              : null,
+            companyName: element.OrganizerInfos?.en?.CompanyName ?? null,
             webAddress: element.EventUrls ? element.EventUrls[0].Url.en : null,
             time: this.formatTime(startDate, endDate),
             rooms: stanze,
