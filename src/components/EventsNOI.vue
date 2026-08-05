@@ -21,7 +21,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
             <div
               class="title"
-              :class="{ spaceToCompany: event.subTitle === '' }"
+              :class="{
+                spaceToCompany: !event.subTitle[options.currentLanguage],
+              }"
             >
               {{ event.title[options.currentLanguage] }}
             </div>
@@ -29,12 +31,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div
             v-else
             class="title"
-            :class="{ spaceToCompany: event.subTitle === '' }"
+            :class="{
+              spaceToCompany: !event.subTitle[options.currentLanguage],
+            }"
           >
             {{ event.title[options.currentLanguage] }}
           </div>
-          <div v-if="event.subTitle" class="subTitle spaceToCompany">
-            {{ event.subTitle }}
+          <div
+            v-if="event.subTitle[options.currentLanguage]"
+            class="subTitle spaceToCompany"
+          >
+            {{ event.subTitle[options.currentLanguage] }}
           </div>
           <div class="company">
             {{ event.companyName }}

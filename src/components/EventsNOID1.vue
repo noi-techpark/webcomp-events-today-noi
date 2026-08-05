@@ -25,8 +25,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div v-else :class="getTitleClass(event)">
             {{ event.title[options.currentLanguage] }}
           </div>
-          <div v-if="event.subTitle" class="subTitle spaceToCompany">
-            {{ event.subTitle }}
+          <div
+            v-if="event.subTitle[options.currentLanguage]"
+            class="subTitle spaceToCompany"
+          >
+            {{ event.subTitle[options.currentLanguage] }}
           </div>
           <div class="company">
             {{ event.companyName }}
@@ -97,10 +100,11 @@ export default {
   },
   methods: {
     getTitleClass(event) {
+      const hasSubTitle = !!event.subTitle[this.options.currentLanguage];
       return {
         title: true,
-        spaceToCompany: event.subTitle === "",
-        fitOneLineOverride: event.subTitle === "",
+        spaceToCompany: !hasSubTitle,
+        fitOneLineOverride: !hasSubTitle,
       };
     },
   },
