@@ -148,9 +148,33 @@ export default {
         it: this.getLocalizedValue(subTitles, "it"),
       };
 
+      const companyNames = {
+        en: element.OrganizerInfos?.en?.CompanyName,
+        de: element.OrganizerInfos?.de?.CompanyName,
+        it: element.OrganizerInfos?.it?.CompanyName,
+      };
+      const localizedCompanyName = {
+        en: this.getLocalizedValue(companyNames, "en"),
+        de: this.getLocalizedValue(companyNames, "de"),
+        it: this.getLocalizedValue(companyNames, "it"),
+      };
+
+      const webAddresses = {
+        en: element.EventUrls?.[0]?.Url?.en,
+        de: element.EventUrls?.[0]?.Url?.de,
+        it: element.EventUrls?.[0]?.Url?.it,
+      };
+      const localizedWebAddress = {
+        en: this.getLocalizedValue(webAddresses, "en"),
+        de: this.getLocalizedValue(webAddresses, "de"),
+        it: this.getLocalizedValue(webAddresses, "it"),
+      };
+
       return {
         title: localizedTitle,
         subTitle: localizedSubTitle,
+        companyName: localizedCompanyName,
+        webAddress: localizedWebAddress,
       };
     },
     getTheme() {
@@ -277,8 +301,8 @@ export default {
             //   ? element.EventDate[0].EventDateAdditionalInfo?.en.Description
             //   : null,
             subTitle: localizedFields.subTitle,
-            companyName: element.OrganizerInfos?.en?.CompanyName ?? null,
-            webAddress: element.EventUrls?.[0]?.Url?.en ?? null,
+            companyName: localizedFields.companyName,
+            webAddress: localizedFields.webAddress,
             time: this.formatTime(startDate, endDate),
             rooms: stanze,
             startDate: this.formatDate(startDate),
@@ -308,7 +332,9 @@ export default {
           e.subTitle.en,
           e.subTitle.de,
           e.subTitle.it,
-          e.companyName,
+          e.companyName.en,
+          e.companyName.de,
+          e.companyName.it,
           e.time,
           e.startDate,
         ].join("|");

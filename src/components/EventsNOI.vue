@@ -18,7 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <div class="content">
       <div class="line" v-for="event in options.events" :key="event.key">
         <div class="textWidth">
-          <a v-if="event.webAddress" :href="event.webAddress" target="_blank">
+          <a
+            v-if="event.webAddress[options.currentLanguage]"
+            :href="event.webAddress[options.currentLanguage]"
+            target="_blank"
+          >
             <div
               class="title"
               :class="{
@@ -44,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             {{ event.subTitle[options.currentLanguage] }}
           </div>
           <div class="company">
-            {{ event.companyName }}
+            {{ event.companyName[options.currentLanguage] }}
           </div>
         </div>
 
